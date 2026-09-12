@@ -1,0 +1,16 @@
+#Artefatos gerados pelo Quarto
+*_files/
+*.html
+
+#Cache do Python
+__pycache__/
+*.pyc
+
+.vscode/settings.json
+
+# Configuração pessoal do editor
+.vscode/settings.json
+
+# Sujeira de sistema operacional
+.DS_Store
+Thumbs.db
