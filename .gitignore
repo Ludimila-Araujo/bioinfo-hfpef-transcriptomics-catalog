@@ -14,3 +14,8 @@ __pycache__/
 # Sujeira de sistema operacional
 .DS_Store
 Thumbs.db
+/.quarto/
+**/*.quarto_ipynb
+
+# Python package build artifacts
+*.egg-info/
