@@ -26,13 +26,49 @@ This report provides a standardized survey of transcriptomic datasets (bulk RNA-
 
 The repository consolidates biological metadata, experimental designs, and sequencing specifications to streamline bioinformatics workflows and comparative analyses.
 
-# Repositories Overview
-
 ```{python}
-
 from hfpef_catalog.data_loader import load_all_species
 
 df_species = load_all_species()
 
-df_species
+print(df_species.keys())
 ```
+
+```{python}
+from hfpef_catalog.processing import count_all_species
+
+total_species = count_all_species(df_species)
+
+print(total_species)
+
+```
+
+```{python}
+from hfpef_catalog.processing import sum_all_repositories
+
+total_repo = sum_all_repositories(df_species)
+print(total_repo)
+
+```
+
+# Repositories Overview
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+### Cataloged Species
+
+# `{python} total_species`
+
+:::
+
+::: {.column width="50%"}
+
+### Repositories
+
+# `{python} total_repo`
+
+:::
+
+:::
