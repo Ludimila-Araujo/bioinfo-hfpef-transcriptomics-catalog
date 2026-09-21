@@ -29,6 +29,10 @@ def get_species_overview(df):
 
     overview_dict = overview_columns.loc[0].to_dict()
 
+    for key, value in overview_dict.items():
+        if isinstance(value, str):
+            overview_dict[key] = value.replace("\n", " ")
+
     return {
         "Dataset ID": overview_dict["Dataset_ID"],
         "Sampled tissue": overview_dict["Sampled_Tissue"],

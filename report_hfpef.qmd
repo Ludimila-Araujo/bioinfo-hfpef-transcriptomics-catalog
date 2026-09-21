@@ -51,6 +51,7 @@ print(total_repo)
 
 ```
 
+
 # Repositories Overview
 
 ::: {.columns}
@@ -72,3 +73,72 @@ print(total_repo)
 :::
 
 :::
+
+## Repositories Details
+
+```{python}
+from hfpef_catalog.processing import get_species_overview
+
+felis_overview = get_species_overview(df_species["felis_catus"])
+
+print(repr(felis_overview["Dataset ID"]))
+print(repr(felis_overview["Conditions"]))
+```
+
+<details>
+<summary><strong>Felis catus</strong></summary>
+
+### Species Overview
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+**Dataset ID:** 
+`{python} felis_overview["Dataset ID"]`
+
+**Sampled tissue:** 
+`{python} felis_overview["Sampled tissue"]`
+
+**Strain / ethnicity:**
+`{python} felis_overview["Strain / ethnicity"]`
+
+:::
+
+::: {.column width="50%"}
+
+**Sex:**
+`{python} felis_overview["Sex"]`
+
+**Biosamples:**
+`{python} felis_overview["Biosamples"]`
+
+**Conditions:**
+`{python} felis_overview["Conditions"]`
+
+:::
+
+:::
+
+</details>
+
+<details>
+<summary><strong>Homo sapiens</strong></summary>
+
+</details>
+
+<details>
+<summary><strong>Mus musculus</strong></summary>
+
+</details>
+
+
+
+```{python}
+for species, df in df_species.items():
+    overview = get_species_overview(df)
+
+    print(species)
+    print(overview)
+    print()
+```
