@@ -13,31 +13,41 @@ def sum_all_repositories(df_species):
     return total_repo
 
 
+# Função para contar quantidade de datasets por espécie:
+def dataset_count(df):
+    return len(df["Dataset_ID"])
+
+
+# Função para contar quantidade de tecidos estudados por repositório:
+def tissue_count(df):
+    return df["Sampled_Tissue"].nunique()
+
+
+# Função para calcular o percentual de datasets segundo categoria de sexo registrada
+def sex_distribution(df):
+
+    sex_counts = df["Sex"].value_counts()
+
+    total_datasets = len(df)
+
+    total_female = (sex_counts.get("Female", 0) / total_datasets) * 100
+    total_male = (sex_counts.get("Male", 0) / total_datasets) * 100
+    total_female_male = (sex_counts.get("Male / female", 0) / total_datasets) * 100
+
+    return total_female, total_male, total_female_male
+
+
+# Função para calcular total de abordagens ômicas por repositório:
+def omics_approach_count(df):
+    return df["Omics_Approach"].nunique()
+
+
 # Função para definir métricas iniciais das espécies:
-def get_species_overview(df):
-
-    overview_columns = df[
-        [
-            "Dataset_ID",
-            "Sampled_Tissue",
-            "Strain / Ethnicity",
-            "Sex",
-            "N_BioSamples",
-            "Condition: {n}",
-        ]
-    ]
-
-    overview_dict = overview_columns.loc[0].to_dict()
-
-    for key, value in overview_dict.items():
-        if isinstance(value, str):
-            overview_dict[key] = value.replace("\n", " ")
+def get_species_profile(df):
 
     return {
-        "Dataset ID": overview_dict["Dataset_ID"],
-        "Sampled tissue": overview_dict["Sampled_Tissue"],
-        "Strain / ethnicity": overview_dict["Strain / Ethnicity"],
-        "Sex": overview_dict["Sex"],
-        "Biosamples": overview_dict["N_BioSamples"],
-        "Conditions": overview_dict["Condition: {n}"],
+        "dataset_count": dataset_count(df),
+        "Sampled tissue": tissue_count(df),
+        "Sex distribution": sex_distribution(df),
+        "Omics approach": omics_approach_count(df),
     }
