@@ -11,6 +11,7 @@ authors:
 format: 
     html: 
         theme: flatly
+        css: styles/custom.scss
         toc: true
         toc-title: "Table of Contents"
 execute:
@@ -80,9 +81,8 @@ print(total_repo)
 from hfpef_catalog.processing import get_species_overview
 
 felis_overview = get_species_overview(df_species["felis_catus"])
-
-print(repr(felis_overview["Dataset ID"]))
-print(repr(felis_overview["Conditions"]))
+homo_overview = get_species_overview(df_species["homo_sapiens"])
+mus_overview = get_species_overview(df_species["mus_musculus"])
 ```
 
 <details>
@@ -94,27 +94,57 @@ print(repr(felis_overview["Conditions"]))
 
 ::: {.column width="50%"}
 
-**Dataset ID:** 
-`{python} felis_overview["Dataset ID"]`
+<div class="overview-card">
 
-**Sampled tissue:** 
-`{python} felis_overview["Sampled tissue"]`
+<p class="overview-label">Dataset ID</p>
 
-**Strain / ethnicity:**
-`{python} felis_overview["Strain / ethnicity"]`
+<p class="overview-value">`{python} felis_overview["Dataset ID"]`</p>
+
+</div>
+
+<div class="overview-card">
+
+<p class="overview-label">Sampled Tissue</p>
+
+<p class="overview-value">`{python} felis_overview["Sampled tissue"]`</p>
+
+</div>
+
+<div class="overview-card">
+
+<p class="overview-label">Strain / ethnicity</p>
+
+<p class="overview-value">`{python} felis_overview["Strain / ethnicity"]`</p>
+
+</div>
 
 :::
 
 ::: {.column width="50%"}
 
-**Sex:**
-`{python} felis_overview["Sex"]`
+<div class="overview-card">
 
-**Biosamples:**
-`{python} felis_overview["Biosamples"]`
+<p class="overview-label">Sex</p>
 
-**Conditions:**
-`{python} felis_overview["Conditions"]`
+<p class="overview-value">`{python} felis_overview["Sex"]`</p>
+
+</div>
+
+<div class="overview-card">
+
+<p class="overview-label">Biosamples</p>
+
+<p class="overview-value">`{python} felis_overview["Biosamples"]`</p>
+
+</div>
+
+<div class="overview-card">
+
+<p class="overview-label">Conditions</p>
+
+<p class="overview-value">`{python} felis_overview["Conditions"]`</p>
+
+</div>
 
 :::
 
