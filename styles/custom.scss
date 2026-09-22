@@ -3,15 +3,24 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     margin-bottom: 1rem;
-}
-
-.overview-label {
-    margin-bottom: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 600;
+    min-height: 120px;
+    /* Força todos os cartões a terem o mesmo tamanho base */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centraliza o texto verticalmente */
 }
 
 .overview-value {
     margin: 0;
     font-size: 1.15rem;
+    word-wrap: break-word;
+    /* Impede que textos longos vazem lateralmente */
+}
+
+
+.overview-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
 }

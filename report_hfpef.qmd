@@ -87,35 +87,34 @@ for species_name, species_df in df_species.items():
 print("::: {.panel-tabset}\n")
 
 for species_name, metrics in metrics_summary.items():
-    
     display_name = species_name.replace("_", " ").capitalize()
-    
+
     print(f"## {display_name}\n")
-    
+
     html_content = f"""
 ::: {{.columns}}
 
 ::: {{.column width="50%"}}
 <div class="overview-card">
 <p class="overview-label">Datasets catalogued</p>
-<p class="overview-value">{metrics['dataset_count']}</p>
+<p class="overview-value">{metrics["dataset_count"]}</p>
 </div>
 
 <div class="overview-card">
 <p class="overview-label">Sampled Tissue</p>
-<p class="overview-value">{metrics['Sampled tissue']}</p>
+<p class="overview-value">{metrics["Sampled tissue"]}</p>
 </div>
 :::
 
 ::: {{.column width="50%"}}
 <div class="overview-card">
 <p class="overview-label">Strain / Ethnicity</p>
-<p class="overview-value">--AJUSTAR DEPOIS</p>
+<p class="overview-value">{metrics["Sex distribution"]}</p>
 </div>
 
 <div class="overview-card">
 <p class="overview-label">Omics Approach</p>
-<p class="overview-value">{metrics['Omics approach']}</p>
+<p class="overview-value">{metrics["Omics approach"]}</p>
 </div>
 :::
 
