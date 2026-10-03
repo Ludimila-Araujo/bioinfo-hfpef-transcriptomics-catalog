@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 # Função para contar o número de espécies catalogadas
 def count_all_species(df_species):
     return len(df_species)
@@ -52,3 +55,20 @@ def get_species_profile(df):
         "Sex distribution": sex_distribution(df),
         "Omics approach": omics_approach_count(df),
     }
+
+
+# Função para normalização dos dados:
+def normalize_data_types(df):
+    df = df.copy()
+
+    df["Biological_Individuals_Count"] = pd.to_numeric(
+        df["Biological_Individuals_Count"], errors="coerce"
+    ).astype("Int64")
+
+    df["N_BioSamples"] = pd.to_numeric(df["N_BioSamples"], errors="coerce").astype(
+        "Int64"
+    )
+
+    df["Local_Server_Path"] = df["Local_Server_Path"].astype("string")
+
+    return df
