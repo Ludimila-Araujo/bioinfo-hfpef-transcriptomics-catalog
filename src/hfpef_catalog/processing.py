@@ -1,4 +1,5 @@
 import pandas as pd
+from hfpef_catalog.data_loader import consolidate_species
 
 
 # Função para contar o número de espécies catalogadas
@@ -72,3 +73,15 @@ def normalize_data_types(df):
     df["Local_Server_Path"] = df["Local_Server_Path"].astype("string")
 
     return df
+
+
+def filter_datasets(df, **filters):
+    print(filters)
+
+    filtered_df = df.copy()
+
+    for column, value in filters.items():
+        if value is not None:
+            filtered_df = filtered_df[filtered_df[column] == value]
+
+    return filtered_df

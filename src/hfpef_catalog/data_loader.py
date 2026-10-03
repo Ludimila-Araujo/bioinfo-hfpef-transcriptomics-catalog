@@ -31,3 +31,7 @@ def load_all_species():
         df_species[key] = load_raw_sheet(species_dictionary[key])
 
     return df_species
+
+
+def consolidate_species(df_species):
+    return pd.concat(df_species.values(), ignore_index=True)
