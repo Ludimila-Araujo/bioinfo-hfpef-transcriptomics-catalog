@@ -91,6 +91,8 @@ for species_name, metrics in metrics_summary.items():
 
     print(f"## {display_name}\n")
 
+    sex = metrics["Sex distribution"]
+
     html_content = f"""
 ::: {{.columns}}
 
@@ -108,8 +110,15 @@ for species_name, metrics in metrics_summary.items():
 
 ::: {{.column width="50%"}}
 <div class="overview-card">
-<p class="overview-label">Strain / Ethnicity</p>
-<p class="overview-value">{metrics["Sex distribution"]}</p>
+<p class="overview-label">Sex Distribution</p>
+
+<p class="overview-value">
+Female: {sex["Female"]:.0f}%<br>
+Male: {sex["Male"]:.0f}%<br>
+Male / female: {sex["Male / female"]:.0f}%<br>
+Not reported: {sex["Not reported"]:.0f}%
+</p>
+
 </div>
 
 <div class="overview-card">
@@ -123,4 +132,9 @@ for species_name, metrics in metrics_summary.items():
     print(html_content)
 
 print(":::")
+```
+
+```{python}
+homo_profile  = get_species_profile(df_species["homo_sapiens"])
+print(homo_profile)
 ```
