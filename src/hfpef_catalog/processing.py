@@ -30,11 +30,12 @@ def sex_distribution(df):
 
     total_datasets = len(df)
 
-    perc_female = round((sex_counts.get("Female", 0) / total_datasets) * 100, 2)
-    perc_male = round((sex_counts.get("Male", 0) / total_datasets) * 100, 2)
-    perc_both = round((sex_counts.get("Male / female", 0) / total_datasets) * 100, 2)
-
-    return f"F: {perc_female}% | M: {perc_male}% | Both: {perc_both}%"
+    return {
+        "Female": (sex_counts.get("Female", 0) / total_datasets) * 100,
+        "Male": (sex_counts.get("Male", 0) / total_datasets) * 100,
+        "Male / female": (sex_counts.get("Male / female", 0) / total_datasets) * 100,
+        "Not reported": (sex_counts.get("Not reported", 0) / total_datasets) * 100,
+    }
 
 
 # Função para calcular total de abordagens ômicas por repositório:
