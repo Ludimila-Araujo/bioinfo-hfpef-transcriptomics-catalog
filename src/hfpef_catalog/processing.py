@@ -81,7 +81,12 @@ def filter_datasets(df, **filters):
     filtered_df = df.copy()
 
     for column, value in filters.items():
-        if value is not None:
+        if value is None:
+            continue
+
+        if isinstance(value, (list, tuple, set)):
+            filtered_df = filtered_df[filtered_df[column].isin(value)]
+        else:
             filtered_df = filtered_df[filtered_df[column] == value]
 
     return filtered_df

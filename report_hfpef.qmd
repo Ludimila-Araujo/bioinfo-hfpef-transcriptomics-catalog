@@ -148,6 +148,8 @@ print(":::")
 from shiny import ui, reactive, render
 from hfpef_catalog.processing import filter_datasets
 
+
+# Seletor de espécies:
 species_choices = ["All species"] + sorted(
     df_consolidated["Species"].dropna().unique().tolist()
 )
@@ -158,17 +160,32 @@ ui.input_select(
     choices=species_choices,
 )
 
+# Seletor por tipo de tecido:
+tissue_choices = sorted(df_consolidated["Sampled_Tissue"].dropna().unique().tolist())
+
+ui.input_select(
+    "sampled_tissue",
+    "Sampled tissue",
+    choices=tissue_choices,
+    multiple=True,
+)
+
 
 @reactive.calc
 def filtered_dataset():
     selected_species = input.species()
+    selected_tissues = input.sampled_tissue()
 
     if selected_species == "All species":
         selected_species = None
 
+    if not selected_tissues:
+        selected_tissues = None
+
     return filter_datasets(
         df_consolidated,
         Species=selected_species,
+        Sampled_Tissue=selected_tissues,
     )
 
 
