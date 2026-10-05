@@ -145,14 +145,34 @@ print(":::")
 # Dashboard 
 
 ```{python}
-from shiny import ui
+from shiny import ui, reactive, render
+from hfpef_catalog.processing import filter_datasets
+
+species_choices = ["All species"] + sorted(
+    df_consolidated["Species"].dropna().unique().tolist()
+)
 
 ui.input_select(
-    "test",
-    "Teste de interatividade",
-    choices={
-        "option_1": "Opção 1",
-        "option_2": "Opção 2",
-    },
+    "species",
+    "Species",
+    choices=species_choices,
 )
+
+
+@reactive.calc
+def filtered_dataset():
+    selected_species = input.species()
+
+    if selected_species == "All species":
+        selected_species = None
+
+    return filter_datasets(
+        df_consolidated,
+        Species=selected_species,
+    )
+
+
+@render.table
+def dataset_preview():
+    return filtered_dataset()
 ```
