@@ -170,11 +170,71 @@ ui.input_select(
     multiple=True,
 )
 
+# Seletor por sexo biológico:
+sex_choices = sorted(df_consolidated["Sex"].dropna().unique().tolist())
+
+ui.input_select(
+    "sex",
+    "Sex",
+    choices=sex_choices,
+    multiple=True,
+)
+
+# Seletor por tipo de abordagem ômica:
+omics_choices = sorted(df_consolidated["Omics_Approach"].dropna().unique().tolist())
+
+ui.input_select(
+    "omics_approach",
+    "Omics_approach",
+    choices=omics_choices,
+    multiple=True,
+)
+
+# Seletor por tipo de plataforma de sequenciamento:
+platform_choices = sorted(df_consolidated["Platform"].dropna().unique().tolist())
+
+ui.input_select(
+    "platform",
+    "Platform",
+    choices=platform_choices,
+    multiple=True,
+)
+
+# Seletor por tipo de dado bruto:
+
+raw_data_choices = sorted(
+    df_consolidated["Raw_Data_Availability"].dropna().unique().tolist()
+)
+
+ui.input_select(
+    "raw_data_availability",
+    "Raw data availability",
+    choices=raw_data_choices,
+    multiple=True,
+)
+
+# Seletor por tipo de dado processado:
+processed_data_choices = sorted(
+    df_consolidated["Processed_Data_Availability"].dropna().unique().tolist()
+)
+
+ui.input_select(
+    "processed_data_availability",
+    "Processed data availability",
+    choices=processed_data_choices,
+    multiple=True,
+)
+
 
 @reactive.calc
 def filtered_dataset():
     selected_species = input.species()
     selected_tissues = input.sampled_tissue()
+    selected_sex = input.sex()
+    selected_omics = input.omics_approach()
+    selected_platform = input.platform()
+    select_raw_data = input.raw_data_availability()
+    selected_processed_data = input.processed_data_availability()
 
     if selected_species == "All species":
         selected_species = None
@@ -182,14 +242,48 @@ def filtered_dataset():
     if not selected_tissues:
         selected_tissues = None
 
+    if not selected_sex:
+        selected_sex = None
+
+    if not selected_omics:
+        selected_omics = None
+
+    if not selected_platform:
+        selected_platform = None
+
+    if not select_raw_data:
+        select_raw_data = None
+
+    if not selected_processed_data:
+        selected_processed_data = None
+
     return filter_datasets(
         df_consolidated,
         Species=selected_species,
         Sampled_Tissue=selected_tissues,
+        Sex=selected_sex,
+        Omics_Approach=selected_omics,
+        Platform=selected_platform,
+        Raw_Data_Availability=select_raw_data,
+        Processed_Data_Availability=selected_processed_data,
     )
 
 
 @render.table
 def dataset_preview():
     return filtered_dataset()
+
+
+@render.text
+def filter_debug():
+    df = filtered_dataset()
+
+    return (
+        f"Species: {input.species()}\n"
+        f"Tissue: {input.sampled_tissue()}\n"
+        f"Sex: {input.sex()}\n"
+        f"Omics: {input.omics_approach()}\n"
+        f"Resultado: {df.shape[0]} registros\n"
+        f"Omics encontrados: {df['Omics_Approach'].tolist()}"
+    )
 ```
