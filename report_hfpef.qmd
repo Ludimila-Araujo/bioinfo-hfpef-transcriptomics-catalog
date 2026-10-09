@@ -394,6 +394,37 @@ def _():
         )
 
 
+@render.ui
+def active_filters():
+    active_filters_list = []
+
+    selected_species = input.species()
+    if selected_species != "All species":
+        active_filters_list.append(f"Species: {selected_species}")
+
+    filter_inputs = {
+        "Sampled tissue": input.sampled_tissue(),
+        "Sex": input.sex(),
+        "Omics approach": input.omics_approach(),
+        "Platform": input.platform(),
+        "Raw data availability": input.raw_data_availability(),
+        "Processed data availability": input.processed_data_availability(),
+    }
+
+    for filter_name, selected_values in filter_inputs.items():
+        if selected_values:
+            for value in selected_values:
+                active_filters_list.append(f"{filter_name}: {value}")
+
+    if not active_filters_list:
+        return ui.p("No active filters.")
+
+    return ui.TagList(
+        ui.h4("Active filters"),
+        ui.tags.ul(*[ui.tags.li(value) for value in active_filters_list]),
+    )
+
+
 @render.table
 def dataset_preview():
     return filtered_dataset()
