@@ -1,6 +1,8 @@
-#Artefatos gerados pelo Quarto
+# Artefatos gerados pelo Quarto
 *_files/
 *.html
+app.py
+**/*.quarto_ipynb
 
 #Cache do Python
 __pycache__/
