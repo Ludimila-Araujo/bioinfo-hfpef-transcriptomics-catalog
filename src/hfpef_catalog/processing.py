@@ -216,3 +216,31 @@ def filter_datasets(
             filtered_df = filtered_df[filtered_df[column] == value]
 
     return filtered_df
+
+
+def count_by_category(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    """
+    Count records for each category in a selected column.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the records to analyze.
+    column : str
+        Name of the column to aggregate.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame containing each category and its record count.
+        Actual missing values are excluded, while "Not reported"
+        is preserved as a valid category.
+    """
+    counts = (
+        df[column]
+        .value_counts(dropna=True)
+        .rename_axis(column)
+        .reset_index(name="count")
+    )
+
+    return counts

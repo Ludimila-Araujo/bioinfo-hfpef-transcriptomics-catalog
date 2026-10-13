@@ -45,6 +45,7 @@ from hfpef_catalog.processing import (
     omics_approach_count,
     normalize_data_types,
     filter_datasets,
+    count_by_category,
 )
 
 # Carregamento inicial de todas as espécies
@@ -145,20 +146,17 @@ print(":::")
 # Dashboard 
 
 ```{python}
+
 from shiny import ui, reactive, render
 from hfpef_catalog.processing import filter_datasets
-
+from hfpef_catalog.visualization import create_bar_chart
 
 # Seletor de espécies:
 species_choices = ["All species"] + sorted(
     df_consolidated["Species"].dropna().unique().tolist()
 )
 
-ui.input_select(
-    "species",
-    "Species",
-    choices=species_choices,
-)
+ui.input_select("species", "Species", choices=species_choices, selected="All species")
 
 ui.panel_conditional(
     "input.species && input.species !== 'All species'",
@@ -307,6 +305,11 @@ def filtered_dataset():
     )
 
 
+@reactive.effect
+def _():
+    df = filtered_dataset()
+
+
 ui.input_action_button(
     "clear_all_filters",
     "Clear all filters",
@@ -422,6 +425,32 @@ def active_filters():
     return ui.TagList(
         ui.h4("Active filters"),
         ui.tags.ul(*[ui.tags.li(value) for value in active_filters_list]),
+    )
+
+
+@render.ui
+def omics_approach_chart():
+    df = filtered_dataset()
+
+    if df.empty:
+        return ui.p("No data available for the selected filters.")
+
+    omics_counts = count_by_category(df, "Omics_Approach")
+
+    fig = create_bar_chart(
+        df=omics_counts,
+        x_column="Omics_Approach",
+        y_column="count",
+        title="Datasets by omics approach",
+        y_axis_title="Number of datasets",
+    )
+
+    return ui.HTML(
+        fig.to_html(
+            full_html=False,
+            include_plotlyjs=True,
+            config={"responsive": True},
+        )
     )
 
 
