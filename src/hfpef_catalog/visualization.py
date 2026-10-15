@@ -91,3 +91,35 @@ def create_horizontal_bar_chart(
     )
 
     return fig
+
+
+def create_donut_chart(
+    df: pd.DataFrame,
+    category_column: str,
+    value_column: str,
+    title: str,
+):
+    """
+    Create a reusable Plotly donut chart.
+    """
+
+    fig = px.pie(
+        df,
+        names=category_column,
+        values=value_column,
+        title=title,
+        hole=0.45,
+    )
+
+    fig.update_traces(
+        textposition="inside",
+        textinfo="label+percent",
+    )
+
+    fig.update_layout(
+        template="plotly_white",
+        margin=dict(l=30, r=20, t=70, b=30),
+        legend_title_text=None,
+    )
+
+    return fig

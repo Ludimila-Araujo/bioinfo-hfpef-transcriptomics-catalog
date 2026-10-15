@@ -149,7 +149,7 @@ print(":::")
 
 from shiny import ui, reactive, render
 from hfpef_catalog.processing import normalize_text_category
-from hfpef_catalog.visualization import create_horizontal_bar_chart
+from hfpef_catalog.visualization import create_horizontal_bar_chart, create_donut_chart
 
 # Seletor de espécies:
 species_choices = ["All species"] + sorted(
@@ -469,6 +469,31 @@ def sampled_tissue_chart():
         y_column="count",
         title="Datasets by sampled tissue",
         x_axis_title="Number of datasets",
+    )
+
+    return ui.HTML(
+        fig.to_html(
+            full_html=False,
+            include_plotlyjs=True,
+            config={"responsive": True},
+        )
+    )
+
+
+@render.ui
+def sex_distribution_chart():
+    df = filtered_dataset()
+
+    if df.empty:
+        return ui.p("No data available for the selected filters.")
+
+    sex_counts = count_by_category(df, "Sex")
+
+    fig = create_donut_chart(
+        df=sex_counts,
+        category_column="Sex",
+        value_column="count",
+        title="Datasets by recorded biological sex",
     )
 
     return ui.HTML(
