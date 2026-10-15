@@ -182,10 +182,7 @@ def normalize_data_types(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def filter_datasets(
-    df: pd.DataFrame,
-    **filters,
-) -> pd.DataFrame:
+def filter_datasets(df: pd.DataFrame, **filters) -> pd.DataFrame:
     """
     Filter datasets using one or more column criteria.
 
@@ -244,3 +241,14 @@ def count_by_category(df: pd.DataFrame, column: str) -> pd.DataFrame:
     )
 
     return counts
+
+
+def normalize_text_category(series: pd.Series) -> pd.Series:
+    """
+    Normalize whitespace in a categorical pandas Series.
+
+    Removes leading and trailing whitespace and replaces
+    consecutive whitespace characters with a single space.
+    Missing values remain missing.
+    """
+    return series.astype("string").str.strip().str.replace(r"\s+", " ", regex=True)
