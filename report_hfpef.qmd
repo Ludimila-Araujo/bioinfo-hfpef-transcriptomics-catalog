@@ -454,30 +454,30 @@ def omics_approach_chart():
     )
 
 
-# @render.ui
-# def sampled_tissue_chart():
-#    df = filtered_dataset()
+@render.ui
+def sampled_tissue_chart():
+    df = filtered_dataset()
 
-# if df.empty:
-#    return ui.p("No data available for the selected filters.")
+    if df.empty:
+        return ui.p("No data available for the selected filters.")
 
-# tissue_counts = count_by_category(df, "Sampled_Tissue")
+    tissue_counts = count_by_category(df, "Sampled_Tissue")
 
-# fig = create_bar_chart(
-#    df=tissue_counts,
-#    x_column="Sampled_Tissue",
-#    y_column="count",
-#    title="Datasets by sampled tissue",
-#    y_axis_title="Number of datasets",
-# )
+    fig = create_horizontal_bar_chart(
+        df=tissue_counts,
+        x_column="Sampled_Tissue",
+        y_column="count",
+        title="Datasets by sampled tissue",
+        x_axis_title="Number of datasets",
+    )
 
-# return ui.HTML(
-#    fig.to_html(
-#        full_html=False,
-#        include_plotlyjs=True,
-#        config={"responsive": True},
-#    )
-# )
+    return ui.HTML(
+        fig.to_html(
+            full_html=False,
+            include_plotlyjs=True,
+            config={"responsive": True},
+        )
+    )
 
 
 @render.table
