@@ -17,7 +17,7 @@ def create_bar_chart(
     df : pd.DataFrame
         DataFrame containing the data to visualize.
     x_column : str
-        Column used for the categories on the x-axis.
+        Column used for the x-axis values.
     y_column : str
         Column used for the values on the y-axis.
     title : str
@@ -101,6 +101,23 @@ def create_donut_chart(
 ):
     """
     Create a reusable Plotly donut chart.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the categories and their values.
+    category_column : str
+        Column containing the category labels.
+    value_column : str
+        Column containing the values used to calculate proportions.
+    title : str
+        Chart title.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Configured Plotly donut chart with category labels
+        and percentage annotations.
     """
 
     fig = px.pie(
@@ -132,7 +149,26 @@ def create_treemap_chart(
     title: str,
 ):
     """
-    Create a reusable Plotly donut chart.
+    Create a reusable Plotly treemap chart.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the categories and their values.
+    category_column : str
+        Column containing the category labels used to define
+        the treemap areas.
+    value_column : str
+        Column containing the values that determine the area
+        of each rectangle.
+    title : str
+        Chart title.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Configured Plotly treemap with category labels,
+        percentage annotations, and hover information.
     """
 
     fig = px.treemap(
