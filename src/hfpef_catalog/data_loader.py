@@ -5,17 +5,18 @@ from hfpef_catalog.config import SPREADSHEET_GID, build_sheet_url
 
 def load_raw_sheet(url: str) -> pd.DataFrame:
     """
-    Load a Google Sheet tab as a pandas DataFrame
+    Load a Google Sheets tab from its CSV export URL.
 
     Parameters
     ----------
     url : str
-        The CSV export URL of the target spreadsheet tab.
+        CSV export URL of the target spreadsheet tab.
 
     Returns
     -------
     pd.DataFrame
-        Data loaded from the spreadsheet, using the second row as the header.
+        Data loaded from the spreadsheet, using the second row
+        as the header.
     """
     df_species = pd.read_csv(url, header=1)
     return df_species
@@ -24,6 +25,8 @@ def load_raw_sheet(url: str) -> pd.DataFrame:
 def load_all_species() -> dict[str, pd.DataFrame]:
     """
     Load the spreadsheet tabs configured for all cataloged species.
+
+    The tabs to load are defined by SPREADSHEET_GID.
 
     Returns
     -------
@@ -54,6 +57,7 @@ def consolidate_species(
     Returns
     -------
     pd.DataFrame
-        Consolidated DataFrame with rows from all species, resetting the index.
+        Consolidated DataFrame containing the rows from all input
+        DataFrames in dictionary iteration order, with a new index.
     """
     return pd.concat(df_species.values(), ignore_index=True)
