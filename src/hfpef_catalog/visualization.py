@@ -123,3 +123,37 @@ def create_donut_chart(
     )
 
     return fig
+
+
+def create_treemap_chart(
+    df: pd.DataFrame,
+    category_column: str,
+    value_column: str,
+    title: str,
+):
+    """
+    Create a reusable Plotly donut chart.
+    """
+
+    fig = px.treemap(
+        df,
+        path=[category_column],
+        values=value_column,
+        title=title,
+    )
+
+    fig.update_traces(
+        textinfo="label+percent entry",
+        hovertemplate=(
+            "<b>%{label}</b><br>"
+            "Datasets: %{value}<br>"
+            "Share: %{percentEntry:.1%}"
+            "<extra></extra>"
+        ),
+    )
+
+    fig.update_layout(
+        margin=dict(l=20, r=20, t=70, b=20),
+    )
+
+    return fig
