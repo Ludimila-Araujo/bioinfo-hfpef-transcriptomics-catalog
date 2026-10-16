@@ -33,12 +33,11 @@ def load_all_species() -> dict[str, pd.DataFrame]:
     dict[str, pd.DataFrame]
         Dictionary mapping each species identifier to its DataFrame.
     """
-    species_dictionary = {}
     df_species = {}
 
-    for key, value in SPREADSHEET_GID.items():
-        species_dictionary[key] = build_sheet_url(value)
-        df_species[key] = load_raw_sheet(species_dictionary[key])
+    for species, gid in SPREADSHEET_GID.items():
+        url = build_sheet_url(gid)
+        df_species[species] = load_raw_sheet(url)
 
     return df_species
 

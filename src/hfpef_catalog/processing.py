@@ -163,7 +163,7 @@ def get_species_profile(df: pd.DataFrame) -> dict:
 
 def normalize_data_types(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Normalize the data types of selected DataFrame columns.
+    Normalize selected column types while preserving original values.
 
     Parameters
     ----------
@@ -173,23 +173,20 @@ def normalize_data_types(df: pd.DataFrame) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        Copy of the input DataFrame with Biological_Individuals_Count
-        and N_BioSamples converted to nullable integers, and
-        Local_Server_Path converted to pandas string type.
+        Copy of the input DataFrame with selected columns represented
+        as pandas string types, preserving categories such as
+        'Not reported' and numeric values stored as text.
     """
     df = df.copy()
 
-    df["Biological_Individuals_Count"] = pd.to_numeric(
-        df["Biological_Individuals_Count"],
-        errors="coerce",
-    ).astype("Int64")
+    columns_to_preserve = [
+        "Biological_Individuals_Count",
+        "N_BioSamples",
+        "Local_Server_Path",
+    ]
 
-    df["N_BioSamples"] = pd.to_numeric(
-        df["N_BioSamples"],
-        errors="coerce",
-    ).astype("Int64")
-
-    df["Local_Server_Path"] = df["Local_Server_Path"].astype("string")
+    for column in columns_to_preserve:
+        df[column] = df[column].astype("string")
 
     return df
 
@@ -276,3 +273,40 @@ def normalize_text_category(series: pd.Series) -> pd.Series:
     """
 
     return series.astype("string").str.strip().str.replace(r"\s+", " ", regex=True)
+
+
+def normalize_text_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Normalize whitespace in selected categorical columns.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame containing the cataloged datasets.
+
+    Returns
+    -------
+    pd.DataFrame
+        Copy of the input DataFrame with normalized categorical values.
+        Missing values and explicit categories such as "Not reported"
+        and "n/a" remain distinct.
+    """
+    normalized_df = df.copy()
+
+    categorical_columns = [
+        "Species",
+        "Sampled_Tissue",
+        "Sex",
+        "Omics_Approach",
+        "Platform",
+        "Raw_Data_Availability",
+        "Processed_Data_Availability",
+        "Molecular_Biotype",
+    ]
+
+    for column in categorical_columns:
+        if column in normalized_df.columns:
+            normalized_df[column] = normalize_text_category(normalized_df[column])
+            normalized_df[column] = normalized_df[column].replace("", pd.NA)
+
+    return normalized_df
