@@ -505,6 +505,38 @@ def sex_distribution_chart():
     )
 
 
+@render.ui
+def platform_chart():
+    df = filtered_dataset()
+
+    if df.empty:
+        return ui.p("No data available for the selected  filters")
+
+    df = df.copy()
+
+    df["Platform"] = normalize_text_category(df["Platform"])
+
+    df["Platform"] = df["Platform"].fillna("Blank in catalog")
+
+    platform_counts = count_by_category(df, "Platform")
+
+    fig = create_horizontal_bar_chart(
+        df=platform_counts,
+        x_column="Platform",
+        y_column="count",
+        title="Datasets by recorded sequencing platform",
+        x_axis_title="Number of datasets",
+    )
+
+    return ui.HTML(
+        fig.to_html(
+            full_html=False,
+            include_plotlyjs=True,
+            config={"responsive": True},
+        )
+    )
+
+
 @render.table
 def dataset_preview():
     return filtered_dataset()
