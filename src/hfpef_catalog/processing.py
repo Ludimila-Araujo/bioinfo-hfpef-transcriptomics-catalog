@@ -24,7 +24,8 @@ def sum_all_repositories(
     df_species: dict[str, pd.DataFrame],
 ) -> int:
     """
-    Count the total number of cataloged datasets across all species.
+    Count the total number of cataloged dataset records across
+    all species DataFrames.
 
     Parameters
     ----------
@@ -36,6 +37,7 @@ def sum_all_repositories(
     int
         Total number of rows across all species DataFrames.
     """
+
     total_repo = 0
 
     for df in df_species.values():
@@ -48,7 +50,7 @@ def sum_all_repositories(
 # Função para contar quantidade de datasets por espécie:
 def dataset_count(df: pd.DataFrame) -> int:
     """
-    Count the datasets recorded in a species DataFrame.
+    Count the dataset records represented in a species DataFrame.
 
     Parameters
     ----------
@@ -58,8 +60,10 @@ def dataset_count(df: pd.DataFrame) -> int:
     Returns
     -------
     int
-        Number of values in the Dataset_ID column.
+        Number of rows in the Dataset_ID column, including rows
+        with missing identifiers.
     """
+
     return len(df["Dataset_ID"])
 
 
@@ -84,7 +88,8 @@ def tissue_count(df: pd.DataFrame) -> int:
 # Função para calcular o percentual de datasets segundo categoria de sexo registrada
 def sex_distribution(df: pd.DataFrame) -> dict[str, float]:
     """
-    Calculate the percentage of datasets in each recorded sex category.
+    Calculate the percentage of dataset records in predefined
+    recorded sex categories.
 
     Parameters
     ----------
@@ -94,9 +99,12 @@ def sex_distribution(df: pd.DataFrame) -> dict[str, float]:
     Returns
     -------
     dict[str, float]
-        Percentage of datasets for each predefined sex category:
-        Female, Male, Male / female, and Not reported.
+        Percentages for Female, Male, Male / female, and
+        Not reported. Percentages use the total number of rows
+        as the denominator. Actual missing values are not
+        returned as a separate category.
     """
+
     sex_counts = df["Sex"].value_counts()
     total_datasets = len(df)
 
@@ -151,6 +159,8 @@ def get_species_profile(df: pd.DataFrame) -> dict:
 
 
 # Função para normalização dos dados:
+
+
 def normalize_data_types(df: pd.DataFrame) -> pd.DataFrame:
     """
     Normalize the data types of selected DataFrame columns.
@@ -170,12 +180,14 @@ def normalize_data_types(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
 
     df["Biological_Individuals_Count"] = pd.to_numeric(
-        df["Biological_Individuals_Count"], errors="coerce"
+        df["Biological_Individuals_Count"],
+        errors="coerce",
     ).astype("Int64")
 
-    df["N_BioSamples"] = pd.to_numeric(df["N_BioSamples"], errors="coerce").astype(
-        "Int64"
-    )
+    df["N_BioSamples"] = pd.to_numeric(
+        df["N_BioSamples"],
+        errors="coerce",
+    ).astype("Int64")
 
     df["Local_Server_Path"] = df["Local_Server_Path"].astype("string")
 
@@ -247,8 +259,20 @@ def normalize_text_category(series: pd.Series) -> pd.Series:
     """
     Normalize whitespace in a categorical pandas Series.
 
-    Removes leading and trailing whitespace and replaces
-    consecutive whitespace characters with a single space.
-    Missing values remain missing.
+    Converts values to pandas string dtype, removes leading and
+    trailing whitespace, and replaces consecutive whitespace
+    characters with a single space. Missing values remain missing.
+    Strings containing only whitespace become empty strings.
+
+    Parameters
+    ----------
+    series : pd.Series
+        Series containing categorical text values.
+
+    Returns
+    -------
+    pd.Series
+        Series with normalized whitespace and pandas string dtype.
     """
+
     return series.astype("string").str.strip().str.replace(r"\s+", " ", regex=True)
