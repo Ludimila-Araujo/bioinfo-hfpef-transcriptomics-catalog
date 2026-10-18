@@ -101,27 +101,31 @@ total_repo = len(df_consolidated)
 ```
 
 
+
 # Repositories Overview
 
 ::: {.columns}
 
 ::: {.column width="50%"}
 
-### Cataloged Species
-
-# `{python} total_species`
+::: {.overview-card}
+<p class="overview-label">Cataloged Species</p>
+<p class="overview-value">`{python} total_species`</p>
+:::
 
 :::
 
 ::: {.column width="50%"}
 
-### Repositories
-
-# `{python} total_repo`
-
+::: {.overview-card}
+<p class="overview-label">Repositories</p>
+<p class="overview-value">`{python} total_repo`</p>
 :::
 
 :::
+
+:::
+
 
 # Repositories Details
 
@@ -135,12 +139,14 @@ for species_name, species_df in df_species.items():
 ```
 
 ```{python}
+
 #| output: asis
 #| echo: false
 
 print("::: {.panel-tabset}\n")
 
-for species_name, metrics in metrics_summary.items():
+for species_name in sorted(metrics_summary):
+    metrics = metrics_summary[species_name]
     display_name = species_name.replace("_", " ").capitalize()
 
     print(f"## {display_name}\n")
@@ -148,42 +154,38 @@ for species_name, metrics in metrics_summary.items():
     sex = metrics["Sex distribution"]
 
     html_content = f"""
-::: {{.columns}}
+<div class="species-cards-grid">
+    <div class="overview-card">
+        <p class="overview-label">Datasets catalogued</p>
+        <p class="overview-value">{metrics["dataset_count"]}</p>
+    </div>
 
-::: {{.column width="50%"}}
-<div class="overview-card">
-<p class="overview-label">Datasets catalogued</p>
-<p class="overview-value">{metrics["dataset_count"]}</p>
+    <div class="overview-card">
+        <p class="overview-label">Sampled Tissue</p>
+        <p class="overview-value">{metrics["Sampled tissue"]}</p>
+    </div>
+
+    <div class="overview-card">
+        <p class="overview-label">Omics Approach</p>
+        <p class="overview-value">{metrics["Omics approach"]}</p>
+    </div>
+
+    <div class="overview-card overview-card--tall">
+        <p class="overview-label">Sex Distribution</p>
+        <p class="overview-value sex-distribution-value">
+            Female: {sex["Female"]:.0f}%<br>
+            Male: {sex["Male"]:.0f}%<br>
+            Male / female: {sex["Male / female"]:.0f}%<br>
+            Not reported: {sex["Not reported"]:.0f}%
+        </p>
+    </div>
 </div>
-
-<div class="overview-card">
-<p class="overview-label">Sampled Tissue</p>
-<p class="overview-value">{metrics["Sampled tissue"]}</p>
-</div>
-:::
-
-::: {{.column width="50%"}}
-<div class="overview-card">
-<p class="overview-label">Sex Distribution</p>
-
-<p class="overview-value">
-Female: {sex["Female"]:.0f}%<br>
-Male: {sex["Male"]:.0f}%<br>
-Male / female: {sex["Male / female"]:.0f}%<br>
-Not reported: {sex["Not reported"]:.0f}%
-</p>
-
-</div>
-
-<div class="overview-card">
-<p class="overview-label">Omics Approach</p>
-<p class="overview-value">{metrics["Omics approach"]}</p>
-</div>
-:::
-
-:::
 """
+
+    print("```{=html}")
     print(html_content)
+    print("```")
+    print()
 
 print(":::")
 ```

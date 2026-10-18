@@ -59,33 +59,45 @@ a:hover {
     color: var(--hfpef-terracotta);
 }
 
-/* Overview cards */
+/* Repository Overview and metric cards */
+
 .overview-card {
-    padding: 1.25rem;
-    border: 1px solid var(--hfpef-border);
-    border-left: 4px solid var(--hfpef-sage);
-    border-radius: 8px;
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 160px;
+    padding: 1.4rem 1.5rem;
     margin-bottom: 1rem;
-    min-height: 120px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 0.65rem;
+
     background: var(--hfpef-surface);
+    border: 1px solid var(--hfpef-border);
+    border-left: 4px solid var(--hfpef-sage);
+    border-radius: 10px;
+
+    box-shadow: 0 3px 12px rgba(23, 43, 58, 0.04);
 }
+
+
+.overview-label {
+    margin: 0;
+    color: var(--hfpef-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
 
 .overview-value {
     margin: 0;
-    font-size: 1.35rem;
-    font-weight: 600;
     color: var(--hfpef-ink);
-    overflow-wrap: anywhere;
-}
-
-.overview-label {
-    margin-bottom: 0.4rem;
-    font-size: 0.85rem;
+    font-size: 2rem;
     font-weight: 600;
-    color: var(--hfpef-muted);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
 }
 
 /* ==========================================
@@ -271,49 +283,71 @@ a:hover {
     display: none;
 }
 
+/* Sex distribution within species cards */
 
-/* ==========================================
-   Metadata Dictionary
-   ========================================== */
 
-.metadata-panel {
-    margin: 1.5rem 0 2rem;
+.sex-distribution-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.6;
 }
 
-.metadata-expander {
-    overflow: hidden;
-    border: 1px solid var(--hfpef-border);
-    border-radius: 8px;
-    background: var(--hfpef-surface);
+@media (max-width: 600px) {
+    .overview-card {
+        min-height: 130px;
+        padding: 1.1rem;
+    }
+
+    .overview-value {
+        font-size: 1.7rem;
+    }
+
+    .sex-distribution-value {
+        font-size: 1.05rem;
+    }
 }
 
-.metadata-expander summary {
-    padding: 1rem 1.25rem;
-    background: #E9EFEB;
-    color: var(--hfpef-ink);
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+
+/* Species cards layout */
+
+.species-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem 1rem;
 }
 
-.metadata-expander summary:hover {
-    background: #DDE7E1;
+.species-cards-grid .overview-card {
+    min-height: 0;
+    margin: 0;
+    padding: 0.9rem 1.25rem;
+    gap: 0.3rem;
 }
 
-.metadata-expander[open] summary {
-    border-bottom: 1px solid var(--hfpef-border);
+.species-cards-grid .overview-value {
+    font-size: 1.6rem;
 }
 
-.metadata-expander>h3,
-.metadata-expander>p {
-    margin-right: 1.25rem;
-    margin-left: 1.25rem;
+.species-cards-grid .sex-distribution-value {
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
-.metadata-expander>h3 {
-    margin-top: 1.5rem;
+.overview-card--tall {
+    grid-column: 2;
+    grid-row: 1 / span 3;
 }
 
-.metadata-expander>p:last-child {
-    margin-bottom: 1.5rem;
+@media (max-width: 700px) {
+    .species-cards-grid {
+        grid-template-columns: 1fr;
+        padding: 0.75rem;
+    }
+
+    .overview-card--tall {
+        grid-column: auto;
+        grid-row: auto;
+    }
 }
