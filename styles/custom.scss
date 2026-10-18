@@ -17,14 +17,12 @@
 }
 
 /* Global typography and text */
-
 body {
     color: var(--hfpef-text);
     line-height: 1.65;
 }
 
 /* Headings */
-
 h1,
 h2,
 h3,
@@ -44,7 +42,6 @@ h2 {
 }
 
 /* Links and navigation */
-
 a {
     color: var(--hfpef-sage);
 }
@@ -54,7 +51,6 @@ a:hover {
 }
 
 /* Table of contents */
-
 #TOC a {
     text-decoration: none;
 }
@@ -64,7 +60,6 @@ a:hover {
 }
 
 /* Overview cards */
-
 .overview-card {
     padding: 1.25rem;
     border: 1px solid var(--hfpef-border);
@@ -93,12 +88,10 @@ a:hover {
     color: var(--hfpef-muted);
 }
 
-
 /* ==========================================
    HFpEF Repository
    Sprint 17.1: Editorial header
    ========================================== */
-
 
 .hero-header {
     position: relative;
@@ -183,96 +176,8 @@ a:hover {
 }
 
 /* ==========================================
-   HFpEF Repository
-   Integrated hero header
-   ========================================== */
-
-.hero-footer {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 1.5rem;
-    align-items: center;
-    margin-top: 1.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(244, 241, 234, 0.25);
-}
-
-.hero-author {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    min-width: 0;
-    color: #F4F1EA;
-    font-size: 0.85rem;
-}
-
-.hero-author strong {
-    font-size: 0.95rem;
-    font-weight: 600;
-}
-
-.hero-author span,
-.hero-author a {
-    color: #D5DFDB;
-}
-
-.hero-author a {
-    overflow-wrap: anywhere;
-    text-decoration: none;
-}
-
-.hero-author a:hover {
-    color: #D9A095;
-    text-decoration: underline;
-}
-
-.hero-logos {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.75rem;
-    min-width: 150px;
-}
-
-.logo-placeholder {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 110px;
-    min-height: 44px;
-    padding: 0.5rem 0.75rem;
-    border: 1px dashed rgba(244, 241, 234, 0.45);
-    border-radius: 6px;
-    color: #D5DFDB;
-    font-size: 0.75rem;
-    text-align: center;
-}
-
-@media (max-width: 850px) {
-    .hero-footer {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .hero-logos {
-        grid-column: 1 / -1;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-    }
-}
-
-@media (max-width: 560px) {
-    .hero-footer {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-logos {
-        grid-column: auto;
-    }
-}
-
-
-/* ==========================================
-   Sprint 17.2: Integrated hero footer
+   Integrated hero footer
+   Consolidated Sprint 17.2 styles
    ========================================== */
 
 .hero-footer {
@@ -301,12 +206,12 @@ a:hover {
     font-weight: 600;
 }
 
-.hero-author span {
+.hero-author span,
+.hero-author a {
     color: #D5DFDB;
 }
 
 .hero-author a {
-    color: #D5DFDB;
     overflow-wrap: anywhere;
     text-decoration: none;
 }
@@ -364,4 +269,51 @@ a:hover {
 
 .quarto-title-block {
     display: none;
+}
+
+
+/* ==========================================
+   Metadata Dictionary
+   ========================================== */
+
+.metadata-panel {
+    margin: 1.5rem 0 2rem;
+}
+
+.metadata-expander {
+    overflow: hidden;
+    border: 1px solid var(--hfpef-border);
+    border-radius: 8px;
+    background: var(--hfpef-surface);
+}
+
+.metadata-expander summary {
+    padding: 1rem 1.25rem;
+    background: #E9EFEB;
+    color: var(--hfpef-ink);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.metadata-expander summary:hover {
+    background: #DDE7E1;
+}
+
+.metadata-expander[open] summary {
+    border-bottom: 1px solid var(--hfpef-border);
+}
+
+.metadata-expander>h3,
+.metadata-expander>p {
+    margin-right: 1.25rem;
+    margin-left: 1.25rem;
+}
+
+.metadata-expander>h3 {
+    margin-top: 1.5rem;
+}
+
+.metadata-expander>p:last-child {
+    margin-bottom: 1.5rem;
 }

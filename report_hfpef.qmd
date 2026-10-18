@@ -59,16 +59,13 @@ execute:
 ```
 
 
-
-
 # Introduction
 
-This report provides a standardized survey of transcriptomic datasets (bulk RNA-seq, scRNA-seq, and snRNA-seq) associated with Heart Failure with preserved Ejection Fraction (HFpEF).
+This report presents a curated overview of transcriptomic datasets relevant to heart failure with preserved ejection fraction (HFpEF). The repository aims to consolidate and organize available datasets, supporting their exploration and reuse in bioinformatics research.
 
 # Metadata Dictionary
 
-The repository consolidates biological metadata, experimental designs, and sequencing specifications to streamline bioinformatics workflows and comparative analyses.
-
+The repository uses a standardized metadata framework to describe the biological, experimental, and technical characteristics of each dataset. These metadata support dataset characterization, facilitate comparisons across studies, and inform the exploration of data availability and experimental diversity.
 
 ```{python}
 from hfpef_catalog.data_loader import (
