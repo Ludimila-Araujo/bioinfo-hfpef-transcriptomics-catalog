@@ -8,18 +8,58 @@ authors:
     - name: "Caio César"
       affiliation: "BioME / UFRN"
       email: "caiocs.maia@gmail.com"
-format: 
-    html: 
-        theme: flatly
-        css: styles/custom.scss
-        toc: true
-        toc-title: "Table of Contents"
-        server: shiny
+format:
+  html:
+    theme: [flatly, styles/custom.scss]
+    toc: true
+    toc-title: "Table of Contents"
+    server: shiny
         
 execute:
     echo: false #versão final exibirá apenas textos, gráficos e tabelas geradas; linhas de código ocultas dos leitores.
     warning: false
 ---
+
+```{=html}
+<div class="hero-header">
+  <p class="hero-eyebrow">TRANSCRIPTOMICS RESOURCE</p>
+
+  <h1>HFpEF Transcriptomics Repositories</h1>
+
+  <p class="hero-description">
+    A curated resource for exploring transcriptomic datasets
+    relevant to heart failure with preserved ejection fraction.
+  </p>
+
+  <div class="hero-footer">
+
+    <div class="hero-author">
+      <strong>Ludimila Araújo</strong>
+      <span>BioME / UFRN</span>
+      <a href="mailto:dearaujo.ludimila@gmail.com">
+        dearaujo.ludimila@gmail.com
+      </a>
+    </div>
+
+    <div class="hero-author">
+      <strong>Caio César</strong>
+      <span>BioME / UFRN</span>
+      <a href="mailto:caiocs.maia@gmail.com">
+        caiocs.maia@gmail.com
+      </a>
+    </div>
+
+    <div class="hero-logos">
+      <!-- Espaço reservado para as logos oficiais -->
+      <span class="logo-placeholder">Logos do projeto</span>
+    </div>
+
+  </div>
+</div>
+```
+
+
+
 
 # Introduction
 

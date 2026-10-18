@@ -1,26 +1,367 @@
+/* ==========================================
+   HFpEF Repository
+   Visual foundation
+   ========================================== */
+
+/*-- scss:rules --*/
+
+:root {
+    --hfpef-ink: #172B3A;
+    --hfpef-paper: #F4F1EA;
+    --hfpef-sage: #527568;
+    --hfpef-terracotta: #B77C70;
+    --hfpef-text: #28333B;
+    --hfpef-muted: #68747B;
+    --hfpef-border: #D9DFDC;
+    --hfpef-surface: #FFFFFF;
+}
+
+/* Global typography and text */
+
+body {
+    color: var(--hfpef-text);
+    line-height: 1.65;
+}
+
+/* Headings */
+
+h1,
+h2,
+h3,
+h4 {
+    color: var(--hfpef-ink);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+h1 {
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    margin-top: 2.75rem;
+    margin-bottom: 1rem;
+}
+
+/* Links and navigation */
+
+a {
+    color: var(--hfpef-sage);
+}
+
+a:hover {
+    color: var(--hfpef-ink);
+}
+
+/* Table of contents */
+
+#TOC a {
+    text-decoration: none;
+}
+
+#TOC a:hover {
+    color: var(--hfpef-terracotta);
+}
+
+/* Overview cards */
+
 .overview-card {
-    padding: 1rem;
-    border: 1px solid #ccc;
+    padding: 1.25rem;
+    border: 1px solid var(--hfpef-border);
+    border-left: 4px solid var(--hfpef-sage);
     border-radius: 8px;
     margin-bottom: 1rem;
     min-height: 120px;
-    /* Força todos os cartões a terem o mesmo tamanho base */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* Centraliza o texto verticalmente */
+    background: var(--hfpef-surface);
 }
 
 .overview-value {
     margin: 0;
-    font-size: 1.15rem;
-    word-wrap: break-word;
-    /* Impede que textos longos vazem lateralmente */
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--hfpef-ink);
+    overflow-wrap: anywhere;
+}
+
+.overview-label {
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--hfpef-muted);
 }
 
 
-.overview-label {
-    margin-bottom: 0.25rem;
+/* ==========================================
+   HFpEF Repository
+   Sprint 17.1: Editorial header
+   ========================================== */
+
+
+.hero-header {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 3rem;
+    margin: 0 0 2.5rem;
+    border-radius: 12px;
+    background-color: #172B3A;
+    background-image:
+        linear-gradient(90deg,
+            rgba(23, 43, 58, 0.98) 0%,
+            rgba(23, 43, 58, 0.92) 43%,
+            rgba(23, 43, 58, 0.25) 100%),
+        url("assets/hfpef_hero.png");
+    background-position: center, right center;
+    background-size: cover, cover;
+    background-repeat: no-repeat;
+    color: #F4F1EA;
+}
+
+.hero-header::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 280px;
+    height: 280px;
+    right: -80px;
+    top: -110px;
+    border: 1px solid rgba(244, 241, 234, 0.18);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 28px rgba(244, 241, 234, 0.035),
+        0 0 0 58px rgba(244, 241, 234, 0.025);
+    pointer-events: none;
+}
+
+.hero-eyebrow {
+    margin: 0 0 1.25rem;
+    color: #D9A095;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.hero-header h1 {
+    max-width: 780px;
+    margin: 0 0 1rem;
+    color: #F4F1EA;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 650;
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+}
+
+.hero-description {
+    max-width: 650px;
+    margin: 0;
+    color: #D5DFDB;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.hero-meta {
+    margin: 2rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(244, 241, 234, 0.2);
+    color: #D5DFDB;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+}
+
+@media (max-width: 600px) {
+    .hero-header {
+        padding: 2rem 1.5rem;
+    }
+
+    .hero-header::after {
+        right: -190px;
+    }
+}
+
+/* ==========================================
+   HFpEF Repository
+   Integrated hero header
+   ========================================== */
+
+.hero-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(244, 241, 234, 0.25);
+}
+
+.hero-author {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+    color: #F4F1EA;
     font-size: 0.85rem;
+}
+
+.hero-author strong {
+    font-size: 0.95rem;
     font-weight: 600;
+}
+
+.hero-author span,
+.hero-author a {
+    color: #D5DFDB;
+}
+
+.hero-author a {
+    overflow-wrap: anywhere;
+    text-decoration: none;
+}
+
+.hero-author a:hover {
+    color: #D9A095;
+    text-decoration: underline;
+}
+
+.hero-logos {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    min-width: 150px;
+}
+
+.logo-placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+    border: 1px dashed rgba(244, 241, 234, 0.45);
+    border-radius: 6px;
+    color: #D5DFDB;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+@media (max-width: 850px) {
+    .hero-footer {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-logos {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 560px) {
+    .hero-footer {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-logos {
+        grid-column: auto;
+    }
+}
+
+
+/* ==========================================
+   Sprint 17.2: Integrated hero footer
+   ========================================== */
+
+.hero-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(244, 241, 234, 0.22);
+}
+
+.hero-author {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    min-width: 0;
+    color: #F4F1EA;
+    font-size: 0.85rem;
+}
+
+.hero-author strong {
+    color: #F4F1EA;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.hero-author span {
+    color: #D5DFDB;
+}
+
+.hero-author a {
+    color: #D5DFDB;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+}
+
+.hero-author a:hover {
+    color: #D9A095;
+    text-decoration: underline;
+}
+
+.hero-logos {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 120px;
+}
+
+.logo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    min-height: 48px;
+    padding: 0.5rem;
+    border: 1px dashed rgba(244, 241, 234, 0.4);
+    border-radius: 6px;
+    color: #D5DFDB;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+@media (max-width: 850px) {
+    .hero-footer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hero-logos {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 560px) {
+    .hero-footer {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+    }
+
+    .hero-logos {
+        grid-column: auto;
+    }
+}
+
+/* Hide Quarto's automatic title block.
+   Title and author metadata remain in the YAML. */
+
+.quarto-title-block {
+    display: none;
 }
