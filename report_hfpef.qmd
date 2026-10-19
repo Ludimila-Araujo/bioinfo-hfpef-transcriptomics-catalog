@@ -195,6 +195,7 @@ print(":::")
 ```{python}
 
 from shiny import ui, reactive, render
+from shiny.express import ui as express_ui
 from hfpef_catalog.processing import normalize_text_category
 from hfpef_catalog.visualization import (
     create_horizontal_bar_chart,
@@ -202,114 +203,135 @@ from hfpef_catalog.visualization import (
     create_treemap_chart,
 )
 
-# Seletor de espécies:
+# Opções dos filtros:
 species_choices = ["All species"] + sorted(
     df_consolidated["Species"].dropna().unique().tolist()
 )
 
-ui.input_select("species", "Species", choices=species_choices, selected="All species")
-
-ui.panel_conditional(
-    "input.species && input.species !== 'All species'",
-    ui.input_action_button("clear_species", "x Species"),
-)
-
-# Seletor por tipo de tecido:
 tissue_choices = sorted(df_consolidated["Sampled_Tissue"].dropna().unique().tolist())
 
-ui.input_select(
-    "sampled_tissue",
-    "Sampled tissue",
-    choices=tissue_choices,
-    multiple=True,
-)
-
-ui.panel_conditional(
-    "input.sampled_tissue && input.sampled_tissue.length > 0",
-    ui.input_action_button("clear_tissue", "x Sampled tissue"),
-)
-
-# Seletor por sexo biológico:
 sex_choices = sorted(df_consolidated["Sex"].dropna().unique().tolist())
 
-ui.input_select(
-    "sex",
-    "Sex",
-    choices=sex_choices,
-    multiple=True,
-)
-
-ui.panel_conditional(
-    "input.sex && input.sex.length > 0",
-    ui.input_action_button(
-        "clear_sex",
-        "× Sex",
-    ),
-)
-
-# Seletor por tipo de abordagem ômica:
 omics_choices = sorted(df_consolidated["Omics_Approach"].dropna().unique().tolist())
 
-ui.input_select(
-    "omics_approach",
-    "Omics_approach",
-    choices=omics_choices,
-    multiple=True,
-)
-
-ui.panel_conditional(
-    "input.omics_approach && input.omics_approach.length > 0",
-    ui.input_action_button("clear_omics", "x Omics approach"),
-)
-
-# Seletor por tipo de plataforma de sequenciamento:
 platform_choices = sorted(df_consolidated["Platform"].dropna().unique().tolist())
-
-ui.input_select(
-    "platform",
-    "Platform",
-    choices=platform_choices,
-    multiple=True,
-)
-
-ui.panel_conditional(
-    "input.platform && input.platform.length > 0",
-    ui.input_action_button("clear_platform", "x Platform"),
-)
-
-# Seletor por tipo de dado bruto:
 
 raw_data_choices = sorted(
     df_consolidated["Raw_Data_Availability"].dropna().unique().tolist()
 )
 
-ui.input_select(
-    "raw_data_availability",
-    "Raw data availability",
-    choices=raw_data_choices,
-    multiple=True,
-)
-
-ui.panel_conditional(
-    "input.raw_data_availability && input.raw_data_availability.length > 0",
-    ui.input_action_button("clear_raw_data", "x Raw data availability"),
-)
-
-# Seletor por tipo de dado processado:
 processed_data_choices = sorted(
     df_consolidated["Processed_Data_Availability"].dropna().unique().tolist()
 )
 
-ui.input_select(
-    "processed_data_availability",
-    "Processed data availability",
-    choices=processed_data_choices,
-    multiple=True,
-)
-
-ui.panel_conditional(
-    "input.processed_data_availability && input.processed_data_availability.length >0",
-    ui.input_action_button("clear_processed_data", "x Processed data availability"),
+# Estrutura visual do dashboard
+ui.div(
+    # área principal
+    ui.div(
+        ui.div(
+            ui.output_ui("omics_approach_chart"),
+            ui.output_ui("sampled_tissue_chart"),
+            ui.output_ui("sex_distribution_chart"),
+            ui.output_ui("platform_chart"),
+            class_="dashboard-charts-grid",
+        ),
+        ui.div(
+            ui.output_ui("molecular_biotype_chart"),
+            class_="dashboard-chart-wide",
+        ),
+        class_="dashboard-main",
+    ),
+    # barra lateral: filtros e resultados relacionados
+    ui.div(
+        ui.div(
+            ui.h4("Filters"),
+            ui.input_select(
+                "species",
+                "Species",
+                choices=species_choices,
+                selected="All species",
+            ),
+            ui.panel_conditional(
+                "input.species && input.species !== 'All species'",
+                ui.input_action_button("clear_species", "x Species"),
+            ),
+            ui.input_select(
+                "sampled_tissue",
+                "Sampled tissue",
+                choices=tissue_choices,
+                multiple=True,
+            ),
+            ui.panel_conditional(
+                "input.sampled_tissue && input.sampled_tissue.length > 0",
+                ui.input_action_button("clear_tissue", "x Sampled tissue"),
+            ),
+            ui.input_select(
+                "sex",
+                "Sex",
+                choices=sex_choices,
+                multiple=True,
+            ),
+            ui.panel_conditional(
+                "input.sex && input.sex.length > 0",
+                ui.input_action_button(
+                    "clear_sex",
+                    "× Sex",
+                ),
+            ),
+            ui.input_select(
+                "omics_approach",
+                "Omics_approach",
+                choices=omics_choices,
+                multiple=True,
+            ),
+            ui.panel_conditional(
+                "input.omics_approach && input.omics_approach.length > 0",
+                ui.input_action_button("clear_omics", "x Omics approach"),
+            ),
+            ui.input_select(
+                "platform",
+                "Platform",
+                choices=platform_choices,
+                multiple=True,
+            ),
+            ui.panel_conditional(
+                "input.platform && input.platform.length > 0",
+                ui.input_action_button("clear_platform", "x Platform"),
+            ),
+            ui.input_select(
+                "raw_data_availability",
+                "Raw data availability",
+                choices=raw_data_choices,
+                multiple=True,
+            ),
+            ui.panel_conditional(
+                "input.raw_data_availability && input.raw_data_availability.length > 0",
+                ui.input_action_button("clear_raw_data", "x Raw data availability"),
+            ),
+            ui.input_select(
+                "processed_data_availability",
+                "Processed data availability",
+                choices=processed_data_choices,
+                multiple=True,
+            ),
+            ui.panel_conditional(
+                "input.processed_data_availability && input.processed_data_availability.length >0",
+                ui.input_action_button(
+                    "clear_processed_data", "x Processed data availability"
+                ),
+            ),
+            ui.input_action_button(
+                "clear_all_filters",
+                "Clear all filters",
+            ),
+        ),
+        ui.div(
+            ui.output_ui("active_filters"),
+            class_="dashboard-active-filters",
+        ),
+        class_="dashboard-sidebar",
+    ),
+    class_="dashboard-layout",
 )
 
 
@@ -359,12 +381,6 @@ def filtered_dataset():
 @reactive.effect
 def _():
     df = filtered_dataset()
-
-
-ui.input_action_button(
-    "clear_all_filters",
-    "Clear all filters",
-)
 
 
 @reactive.effect
@@ -448,178 +464,175 @@ def _():
         )
 
 
-@render.ui
-def active_filters():
-    active_filters_list = []
+with express_ui.hold():
 
-    selected_species = input.species()
-    if selected_species != "All species":
-        active_filters_list.append(f"Species: {selected_species}")
+    @render.ui
+    def active_filters():
+        active_filters_list = []
 
-    filter_inputs = {
-        "Sampled tissue": input.sampled_tissue(),
-        "Sex": input.sex(),
-        "Omics approach": input.omics_approach(),
-        "Platform": input.platform(),
-        "Raw data availability": input.raw_data_availability(),
-        "Processed data availability": input.processed_data_availability(),
-    }
+        selected_species = input.species()
+        if selected_species != "All species":
+            active_filters_list.append(f"Species: {selected_species}")
 
-    for filter_name, selected_values in filter_inputs.items():
-        if selected_values:
-            for value in selected_values:
-                active_filters_list.append(f"{filter_name}: {value}")
+        filter_inputs = {
+            "Sampled tissue": input.sampled_tissue(),
+            "Sex": input.sex(),
+            "Omics approach": input.omics_approach(),
+            "Platform": input.platform(),
+            "Raw data availability": input.raw_data_availability(),
+            "Processed data availability": input.processed_data_availability(),
+        }
 
-    if not active_filters_list:
-        return ui.p("No active filters.")
+        for filter_name, selected_values in filter_inputs.items():
+            if selected_values:
+                for value in selected_values:
+                    active_filters_list.append(f"{filter_name}: {value}")
 
-    return ui.TagList(
-        ui.h4("Active filters"),
-        ui.tags.ul(*[ui.tags.li(value) for value in active_filters_list]),
-    )
+        if not active_filters_list:
+            return ui.p("No active filters.")
 
-
-@render.ui
-def omics_approach_chart():
-    df = filtered_dataset()
-
-    if df.empty:
-        return ui.p("No data available for the selected filters.")
-
-    omics_counts = count_by_category(df, "Omics_Approach")
-
-    fig = create_horizontal_bar_chart(
-        df=omics_counts,
-        x_column="Omics_Approach",
-        y_column="count",
-        title="Datasets by omics approach",
-        x_axis_title="Number of datasets",
-    )
-
-    return ui.HTML(
-        fig.to_html(
-            full_html=False,
-            include_plotlyjs=True,
-            config={"responsive": True},
+        return ui.TagList(
+            ui.h4("Active filters"),
+            ui.tags.ul(*[ui.tags.li(value) for value in active_filters_list]),
         )
-    )
 
+    @render.ui
+    def omics_approach_chart():
+        df = filtered_dataset()
 
-@render.ui
-def sampled_tissue_chart():
-    df = filtered_dataset()
+        if df.empty:
+            return ui.p("No data available for the selected filters.")
 
-    if df.empty:
-        return ui.p("No data available for the selected filters.")
+        omics_counts = count_by_category(df, "Omics_Approach")
 
-    tissue_counts = count_by_category(df, "Sampled_Tissue")
-
-    fig = create_horizontal_bar_chart(
-        df=tissue_counts,
-        x_column="Sampled_Tissue",
-        y_column="count",
-        title="Datasets by sampled tissue",
-        x_axis_title="Number of datasets",
-    )
-
-    return ui.HTML(
-        fig.to_html(
-            full_html=False,
-            include_plotlyjs=True,
-            config={"responsive": True},
+        fig = create_horizontal_bar_chart(
+            df=omics_counts,
+            x_column="Omics_Approach",
+            y_column="count",
+            title="Datasets by omics approach",
+            x_axis_title="Number of datasets",
         )
-    )
 
-
-@render.ui
-def sex_distribution_chart():
-    df = filtered_dataset()
-
-    if df.empty:
-        return ui.p("No data available for the selected filters.")
-
-    sex_counts = count_by_category(df, "Sex")
-
-    fig = create_donut_chart(
-        df=sex_counts,
-        category_column="Sex",
-        value_column="count",
-        title="Datasets by recorded biological sex",
-    )
-
-    return ui.HTML(
-        fig.to_html(
-            full_html=False,
-            include_plotlyjs=True,
-            config={"responsive": True},
+        return ui.HTML(
+            fig.to_html(
+                full_html=False,
+                include_plotlyjs=True,
+                config={"responsive": True},
+            )
         )
-    )
 
+    @render.ui
+    def sampled_tissue_chart():
+        df = filtered_dataset()
 
-@render.ui
-def platform_chart():
-    df = filtered_dataset()
+        if df.empty:
+            return ui.p("No data available for the selected filters.")
 
-    if df.empty:
-        return ui.p("No data available for the selected  filters")
+        tissue_counts = count_by_category(df, "Sampled_Tissue")
 
-    df = df.copy()
-
-    df["Platform"] = normalize_text_category(df["Platform"])
-
-    df["Platform"] = df["Platform"].fillna("Blank in catalog")
-
-    platform_counts = count_by_category(df, "Platform")
-
-    fig = create_horizontal_bar_chart(
-        df=platform_counts,
-        x_column="Platform",
-        y_column="count",
-        title="Datasets by recorded sequencing platform",
-        x_axis_title="Number of datasets",
-    )
-
-    return ui.HTML(
-        fig.to_html(
-            full_html=False,
-            include_plotlyjs=True,
-            config={"responsive": True},
+        fig = create_horizontal_bar_chart(
+            df=tissue_counts,
+            x_column="Sampled_Tissue",
+            y_column="count",
+            title="Datasets by sampled tissue",
+            x_axis_title="Number of datasets",
         )
-    )
 
-
-@render.ui
-def molecular_biotype_chart():
-    df = filtered_dataset()
-
-    if df.empty:
-        return ui.p("No data available for the selected filters.")
-
-    df = df.copy()
-
-    df["Molecular_Biotype"] = normalize_text_category(df["Molecular_Biotype"])
-
-    df["Molecular_Biotype"] = df["Molecular_Biotype"].fillna("Blank in catalog")
-
-    biotype_counts = count_by_category(
-        df,
-        "Molecular_Biotype",
-    )
-
-    fig = create_treemap_chart(
-        df=biotype_counts,
-        category_column="Molecular_Biotype",
-        value_column="count",
-        title="Datasets by molecular biotype",
-    )
-
-    return ui.HTML(
-        fig.to_html(
-            full_html=False,
-            include_plotlyjs=True,
-            config={"responsive": True},
+        return ui.HTML(
+            fig.to_html(
+                full_html=False,
+                include_plotlyjs=True,
+                config={"responsive": True},
+            )
         )
-    )
+
+    @render.ui
+    def sex_distribution_chart():
+        df = filtered_dataset()
+
+        if df.empty:
+            return ui.p("No data available for the selected filters.")
+
+        sex_counts = count_by_category(df, "Sex")
+
+        fig = create_donut_chart(
+            df=sex_counts,
+            category_column="Sex",
+            value_column="count",
+            title="Datasets by recorded biological sex",
+        )
+
+        return ui.HTML(
+            fig.to_html(
+                full_html=False,
+                include_plotlyjs=True,
+                config={"responsive": True},
+            )
+        )
+
+    @render.ui
+    def platform_chart():
+        df = filtered_dataset()
+
+        if df.empty:
+            return ui.p("No data available for the selected  filters")
+
+        df = df.copy()
+
+        df["Platform"] = normalize_text_category(df["Platform"])
+
+        df["Platform"] = df["Platform"].fillna("Blank in catalog")
+
+        platform_counts = count_by_category(df, "Platform")
+
+        fig = create_horizontal_bar_chart(
+            df=platform_counts,
+            x_column="Platform",
+            y_column="count",
+            title="Datasets by recorded sequencing platform",
+            x_axis_title="Number of datasets",
+        )
+
+        return ui.HTML(
+            fig.to_html(
+                full_html=False,
+                include_plotlyjs=True,
+                config={"responsive": True},
+            )
+        )
+
+    @render.ui
+    def molecular_biotype_chart():
+        df = filtered_dataset()
+
+        if df.empty:
+            return ui.p("No data available for the selected filters.")
+
+        df = df.copy()
+
+        df["Molecular_Biotype"] = normalize_text_category(df["Molecular_Biotype"])
+
+        df["Molecular_Biotype"] = df["Molecular_Biotype"].fillna("Blank in catalog")
+
+        biotype_counts = count_by_category(
+            df,
+            "Molecular_Biotype",
+        )
+
+        fig = create_treemap_chart(
+            df=biotype_counts,
+            category_column="Molecular_Biotype",
+            value_column="count",
+            title="Datasets by molecular biotype",
+        )
+
+        return ui.HTML(
+            fig.to_html(
+                full_html=False,
+                include_plotlyjs=True,
+                config={"responsive": True},
+            )
+        )
 
 
 @render.table
