@@ -457,164 +457,219 @@ body {
     }
 }
 
-/* Dashboard layout */
-.dashboard-layout {
+/* ==========================================
+   HFpEF Dashboard
+   Layout based on Quarto output cells
+   ========================================== */
+
+#dashboard {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
-    grid-template-areas: "main sidebar";
-    gap: 1.25rem;
+    grid-template-columns: 300px minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+        "heading heading heading"
+        "filters omics tissue"
+        "filters sex platform"
+        "filters treemap treemap";
     align-items: start;
-    width: 100%;
-    max-width: none;
-    margin: 0;
-}
-
-.dashboard-main {
-    grid-area: main;
-    min-width: 0;
-    width: 100%;
-}
-
-.dashboard-sidebar {
-    grid-area: sidebar;
-    min-width: 0;
-    width: 100%;
-    position: sticky;
-    top: 1rem;
-}
-
-.dashboard-charts-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
-    width: 100%;
-}
-
-.dashboard-chart-wide {
-    margin-top: 1rem;
     min-width: 0;
-    width: 100%;
 }
 
-.dashboard-active-filters {
-    margin-top: 1rem;
-    overflow-wrap: anywhere;
+#dashboard>h1 {
+    grid-area: heading;
 }
 
-/* Responsive layout */
-@media (max-width: 900px) {
-    .dashboard-layout {
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-areas:
-            "sidebar"
-            "main";
-    }
-
-    .dashboard-sidebar {
-        position: static;
-    }
+/* Flatten Quarto cell wrappers */
+#dashboard>.cell {
+    display: contents;
 }
 
-@media (max-width: 600px) {
-    .dashboard-charts-grid {
-        grid-template-columns: minmax(0, 1fr);
-    }
+/* Hide the empty layout placeholder */
+#dashboard .cell-output:has(> .dashboard-layout) {
+    display: none;
 }
 
-/* Expand dashboard output container */
-#dashboard .cell-output:has(.dashboard-layout),
-#dashboard .cell-output-display:has(.dashboard-layout) {
+/* Filter area */
+#dashboard .cell-output:has(.dashboard-sidebar) {
+    grid-area: filters;
     display: block;
+    align-self: stretch;
     width: 100%;
-    max-width: none;
     min-width: 0;
+    height: auto;
+    overflow: visible;
 }
 
-#dashboard .dashboard-layout {
+#dashboard .cell-output:has(.dashboard-sidebar)>.dashboard-layout {
+    display: contents;
+}
+
+#dashboard .dashboard-sidebar {
     width: 100%;
-    max-width: none;
+    min-width: 0;
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: 1.25rem;
+    background: var(--hfpef-surface);
+    border: 1px solid var(--hfpef-border);
+    border-radius: 12px;
+}
+
+#dashboard .dashboard-sidebar h4 {
+    margin: 0 0 1rem;
+    color: var(--hfpef-ink);
+    font-size: 1.1rem;
+}
+
+#dashboard .dashboard-sidebar .form-group {
+    margin-bottom: 1.1rem;
+}
+
+#dashboard .dashboard-sidebar label {
+    margin-bottom: 0.45rem;
+    font-size: 0.9rem;
+}
+
+#dashboard .dashboard-sidebar .form-select,
+#dashboard .dashboard-sidebar .form-control,
+#dashboard .dashboard-sidebar .selectize-control {
+    width: 100%;
+    max-width: 100%;
+}
+
+#dashboard .dashboard-sidebar .selectize-input {
+    border-color: var(--hfpef-border);
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+#dashboard .dashboard-sidebar .selectize-input.focus {
+    border-color: var(--hfpef-sage);
+    box-shadow: 0 0 0 2px rgba(82, 117, 104, 0.12);
+}
+
+/* Chart output cells */
+#dashboard .cell-output:has(#omics_approach_chart) {
+    grid-area: omics;
+}
+
+#dashboard .cell-output:has(#sampled_tissue_chart) {
+    grid-area: tissue;
+}
+
+#dashboard .cell-output:has(#sex_distribution_chart) {
+    grid-area: sex;
+}
+
+#dashboard .cell-output:has(#platform_chart) {
+    grid-area: platform;
+}
+
+#dashboard .cell-output:has(#molecular_biotype_chart) {
+    grid-area: treemap;
+}
+
+/* Prevent chart overflow */
+#dashboard .cell-output:has(.js-plotly-plot) {
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
 }
 
-
-/* Compact dashboard */
-.dashboard-layout {
-    gap: 1rem;
+#dashboard .js-plotly-plot,
+#dashboard .plot-container,
+#dashboard .svg-container {
+    max-width: 100% !important;
 }
 
-.dashboard-charts-grid {
-    gap: 0.5rem;
+#dashboard .dashboard-active-filters {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--hfpef-border);
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
 }
 
-.dashboard-charts-grid>div {
+
+/* Filter panel visual balance */
+#dashboard .dashboard-sidebar {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    display: block;
+    box-sizing: border-box;
+    padding: 1.4rem;
+    background: var(--hfpef-surface);
+    border: 1px solid var(--hfpef-border);
+    border-radius: 12px;
+}
+
+/* Keep the active-filter message inside the sidebar */
+#dashboard .dashboard-active-filters {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--hfpef-border);
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+}
+
+/* More space between filter controls */
+#dashboard .dashboard-sidebar .form-group {
+    margin-bottom: 1.15rem;
+}
+
+/* Keep the clear button comfortably spaced */
+#dashboard .dashboard-sidebar button {
+    margin-top: 0.5rem;
+    align-self: flex-start;
+}
+
+
+/* Tablet */
+@media (max-width: 950px) {
+    #dashboard {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-areas:
+            "heading heading"
+            "filters filters"
+            "omics tissue"
+            "sex platform"
+            "treemap treemap";
+    }
+}
+
+
+/* Keep the dataset preview outside the chart grid */
+#dashboard .cell-output:has(#dataset_preview) {
+    grid-column: 1 / -1;
+    width: 100%;
     min-width: 0;
 }
 
-.dashboard-sidebar {
-    font-size: 0.9rem;
+/* Prevent the preview table from forcing page overflow */
+#dashboard .cell-output:has(#dataset_preview) table {
+    max-width: 100%;
 }
 
-.dashboard-sidebar h4 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
 
-.dashboard-sidebar label {
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-}
-
-.dashboard-sidebar .form-select,
-.dashboard-sidebar .form-control {
-    font-size: 0.85rem;
-    padding: 0.35rem 0.6rem;
-}
-
-.dashboard-active-filters {
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-}
-
-/* Reduce chart height and spacing */
-.dashboard-charts-grid .js-plotly-plot {
-    height: 300px !important;
-}
-
-.dashboard-chart-wide .js-plotly-plot {
-    height: 360px !important;
-}
-
-.dashboard-charts-grid .plot-container,
-.dashboard-chart-wide .plot-container,
-.dashboard-charts-grid .svg-container,
-.dashboard-chart-wide .svg-container {
-    height: 100% !important;
-}
-
-/* Smaller chart typography */
-.dashboard-layout .xtick text,
-.dashboard-layout .ytick text {
-    font-size: 10px !important;
-}
-
-.dashboard-layout .gtitle {
-    font-size: 14px !important;
-}
-
-.dashboard-layout .g-xtitle text,
-.dashboard-layout .g-ytitle text {
-    font-size: 11px !important;
-}
-
-/* Responsive */
+/* Mobile */
 @media (max-width: 600px) {
-    .dashboard-charts-grid .js-plotly-plot {
-        height: 260px !important;
+    #dashboard {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "heading"
+            "filters"
+            "omics"
+            "tissue"
+            "sex"
+            "platform"
+            "treemap";
     }
 
-    .dashboard-chart-wide .js-plotly-plot {
-        height: 300px !important;
+    #dashboard .dashboard-sidebar {
+        padding: 0.85rem;
     }
 }
 
