@@ -411,7 +411,7 @@ with express_ui.div(class_="dashboard-layout"):
     with express_ui.div(class_="dashboard-sidebar"):
         ui.div(
             ui.h4("Filters"),
-            ui.input_select(
+            ui.input_selectize(
                 "species",
                 "Species",
                 choices=species_choices,
@@ -421,7 +421,7 @@ with express_ui.div(class_="dashboard-layout"):
                 "input.species && input.species !== 'All species'",
                 ui.input_action_button("clear_species", "x Species"),
             ),
-            ui.input_select(
+            ui.input_selectize(
                 "sampled_tissue",
                 "Sampled tissue",
                 choices=tissue_choices,
@@ -431,7 +431,7 @@ with express_ui.div(class_="dashboard-layout"):
                 "input.sampled_tissue && input.sampled_tissue.length > 0",
                 ui.input_action_button("clear_tissue", "x Sampled tissue"),
             ),
-            ui.input_select(
+            ui.input_selectize(
                 "sex",
                 "Sex",
                 choices=sex_choices,
@@ -444,7 +444,7 @@ with express_ui.div(class_="dashboard-layout"):
                     "× Sex",
                 ),
             ),
-            ui.input_select(
+            ui.input_selectize(
                 "omics_approach",
                 "Omics_approach",
                 choices=omics_choices,
@@ -454,7 +454,7 @@ with express_ui.div(class_="dashboard-layout"):
                 "input.omics_approach && input.omics_approach.length > 0",
                 ui.input_action_button("clear_omics", "x Omics approach"),
             ),
-            ui.input_select(
+            ui.input_selectize(
                 "platform",
                 "Platform",
                 choices=platform_choices,
@@ -464,7 +464,7 @@ with express_ui.div(class_="dashboard-layout"):
                 "input.platform && input.platform.length > 0",
                 ui.input_action_button("clear_platform", "x Platform"),
             ),
-            ui.input_select(
+            ui.input_selectize(
                 "raw_data_availability",
                 "Raw data availability",
                 choices=raw_data_choices,
@@ -474,7 +474,7 @@ with express_ui.div(class_="dashboard-layout"):
                 "input.raw_data_availability && input.raw_data_availability.length > 0",
                 ui.input_action_button("clear_raw_data", "x Raw data availability"),
             ),
-            ui.input_select(
+            ui.input_selectize(
                 "processed_data_availability",
                 "Processed data availability",
                 choices=processed_data_choices,
