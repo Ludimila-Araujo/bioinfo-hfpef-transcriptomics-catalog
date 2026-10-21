@@ -12,7 +12,13 @@ format:
   html:
     theme: [flatly, styles/custom.scss]
     toc: true
+    toc-depth: 2
     toc-title: "Table of Contents"
+    page-layout: full
+    grid:
+      body-width: 1200px
+      margin-width: 180px
+      gutter-width: 1rem
     server: shiny
         
 execute:
@@ -33,20 +39,23 @@ execute:
 
   <div class="hero-footer">
 
-    <div class="hero-author">
-      <strong>Ludimila Araújo</strong>
-      <span>BioME / UFRN</span>
-      <a href="mailto:dearaujo.ludimila@gmail.com">
-        dearaujo.ludimila@gmail.com
-      </a>
-    </div>
+    <div class="hero-authors">
 
-    <div class="hero-author">
-      <strong>Caio César</strong>
-      <span>BioME / UFRN</span>
-      <a href="mailto:caiocs.maia@gmail.com">
-        caiocs.maia@gmail.com
-      </a>
+        <div class="hero-author">
+            <strong>Ludimila Araújo</strong>
+            <span>BioME / UFRN</span>
+            <a href="mailto:dearaujo.ludimila@gmail.com">
+            dearaujo.ludimila@gmail.com
+            </a>
+        </div>
+
+        <div class="hero-author">
+            <strong>Caio César</strong>
+            <span>BioME / UFRN</span>
+            <a href="mailto:caiocs.maia@gmail.com">
+            caiocs.maia@gmail.com
+            </a>
+        </div>
     </div>
 
     <div class="hero-logos">
@@ -57,15 +66,6 @@ execute:
   </div>
 </div>
 ```
-
-
-# Introduction
-
-This report presents a curated overview of transcriptomic datasets relevant to heart failure with preserved ejection fraction (HFpEF). The repository aims to consolidate and organize available datasets, supporting their exploration and reuse in bioinformatics research.
-
-# Metadata Dictionary
-
-The repository uses a standardized metadata framework to describe the biological, experimental, and technical characteristics of each dataset. These metadata support dataset characterization, facilitate comparisons across studies, and inform the exploration of data availability and experimental diversity.
 
 ```{python}
 from hfpef_catalog.data_loader import (
@@ -85,7 +85,6 @@ from hfpef_catalog.processing import (
     normalize_text_columns,
 )
 
-
 # Carregamento inicial de todas as espécies
 df_species = load_all_species()
 
@@ -101,30 +100,40 @@ total_repo = len(df_consolidated)
 ```
 
 
+# Introduction
+
+This report presents a curated overview of transcriptomic datasets relevant to heart failure with preserved ejection fraction (HFpEF). The repository aims to consolidate and organize available datasets, supporting their exploration and reuse in bioinformatics research.
+
+# Metadata Dictionary
+
+The repository uses a standardized metadata framework to describe the biological, experimental, and technical characteristics of each dataset. These metadata support dataset characterization, facilitate comparisons across studies, and inform the exploration of data availability and experimental diversity.
 
 # Repositories Overview
 
-::: {.columns}
 
-::: {.column width="50%"}
+::::: {.overview-metrics}
 
-::: {.overview-card}
-<p class="overview-label">Cataloged Species</p>
-<p class="overview-value">`{python} total_species`</p>
+:::: {.overview-card}
+::: {.overview-label}
+Cataloged Species
 :::
 
+::: {.overview-value}
+`{python} total_species`
+:::
+::::
+
+:::: {.overview-card}
+::: {.overview-label}
+Repositories
 :::
 
-::: {.column width="50%"}
-
-::: {.overview-card}
-<p class="overview-label">Repositories</p>
-<p class="overview-value">`{python} total_repo`</p>
+::: {.overview-value}
+`{python} total_repo`
 :::
+::::
 
-:::
-
-:::
+:::::
 
 
 # Repositories Details
@@ -225,24 +234,158 @@ processed_data_choices = sorted(
 )
 
 # Estrutura visual do dashboard
-ui.div(
+with express_ui.div(class_="dashboard-layout"):
     # área principal
-    ui.div(
-        ui.div(
-            ui.output_ui("omics_approach_chart"),
-            ui.output_ui("sampled_tissue_chart"),
-            ui.output_ui("sex_distribution_chart"),
-            ui.output_ui("platform_chart"),
-            class_="dashboard-charts-grid",
-        ),
-        ui.div(
-            ui.output_ui("molecular_biotype_chart"),
-            class_="dashboard-chart-wide",
-        ),
-        class_="dashboard-main",
-    ),
-    # barra lateral: filtros e resultados relacionados
-    ui.div(
+    with express_ui.div(class_="dashboard-main"):
+        with express_ui.div(class_="dashboard-charts-grid"):
+
+            @render.ui
+            def omics_approach_chart():
+                df = filtered_dataset()
+
+                if df.empty:
+                    return ui.p("No data available for the selected filters.")
+
+                omics_counts = count_by_category(df, "Omics_Approach")
+
+                fig = create_horizontal_bar_chart(
+                    df=omics_counts,
+                    x_column="Omics_Approach",
+                    y_column="count",
+                    title="Datasets by omics approach",
+                    x_axis_title="Number of datasets",
+                )
+
+                return ui.HTML(
+                    fig.to_html(
+                        full_html=False,
+                        include_plotlyjs=True,
+                        config={"responsive": True},
+                    )
+                )
+
+            @render.ui
+            def sampled_tissue_chart():
+                df = filtered_dataset()
+
+                if df.empty:
+                    return ui.p("No data available for the selected filters.")
+
+                tissue_counts = count_by_category(df, "Sampled_Tissue")
+
+                fig = create_horizontal_bar_chart(
+                    df=tissue_counts,
+                    x_column="Sampled_Tissue",
+                    y_column="count",
+                    title="Datasets by sampled tissue",
+                    x_axis_title="Number of datasets",
+                )
+
+                return ui.HTML(
+                    fig.to_html(
+                        full_html=False,
+                        include_plotlyjs=True,
+                        config={"responsive": True},
+                    )
+                )
+
+            @render.ui
+            def sex_distribution_chart():
+                df = filtered_dataset()
+
+                if df.empty:
+                    return ui.p("No data available for the selected filters.")
+
+                sex_counts = count_by_category(df, "Sex")
+
+                fig = create_donut_chart(
+                    df=sex_counts,
+                    category_column="Sex",
+                    value_column="count",
+                    title="Datasets by recorded biological sex",
+                )
+
+                return ui.HTML(
+                    fig.to_html(
+                        full_html=False,
+                        include_plotlyjs=True,
+                        config={"responsive": True},
+                    )
+                )
+
+            @render.ui
+            def platform_chart():
+                df = filtered_dataset()
+
+                if df.empty:
+                    return ui.p("No data available for the selected  filters")
+
+                df = df.copy()
+
+                df["Platform"] = normalize_text_category(df["Platform"])
+
+                df["Platform"] = df["Platform"].fillna("Blank in catalog")
+
+                platform_counts = count_by_category(df, "Platform")
+
+                fig = create_horizontal_bar_chart(
+                    df=platform_counts,
+                    x_column="Platform",
+                    y_column="count",
+                    title="Datasets by recorded sequencing platform",
+                    x_axis_title="Number of datasets",
+                )
+
+                return ui.HTML(
+                    fig.to_html(
+                        full_html=False,
+                        include_plotlyjs=True,
+                        config={"responsive": True},
+                    )
+                )
+
+        with express_ui.div(class_="dashboard-chart-wide"):
+
+            @render.ui
+            def molecular_biotype_chart():
+                df = filtered_dataset()
+
+                if df.empty:
+                    return ui.p("No data available for the selected filters.")
+
+                df = df.copy()
+
+                df["Molecular_Biotype"] = normalize_text_category(
+                    df["Molecular_Biotype"]
+                )
+
+                df["Molecular_Biotype"] = df["Molecular_Biotype"].fillna(
+                    "Blank in catalog"
+                )
+
+                biotype_counts = count_by_category(
+                    df,
+                    "Molecular_Biotype",
+                )
+
+                fig = create_treemap_chart(
+                    df=biotype_counts,
+                    category_column="Molecular_Biotype",
+                    value_column="count",
+                    title="Datasets by molecular biotype",
+                )
+
+                return ui.HTML(
+                    fig.to_html(
+                        full_html=False,
+                        include_plotlyjs=True,
+                        config={"responsive": True},
+                    )
+                )
+
+                # barra lateral: filtros e resultados relacionados
+
+    with express_ui.div(class_="dashboard-sidebar"):
         ui.div(
             ui.h4("Filters"),
             ui.input_select(
@@ -324,15 +467,39 @@ ui.div(
                 "clear_all_filters",
                 "Clear all filters",
             ),
-        ),
-        ui.div(
-            ui.output_ui("active_filters"),
-            class_="dashboard-active-filters",
-        ),
-        class_="dashboard-sidebar",
-    ),
-    class_="dashboard-layout",
-)
+        )
+
+        with express_ui.div(class_="dashboard-active-filters"):
+
+            @render.ui
+            def active_filters():
+                active_filters_list = []
+
+                selected_species = input.species()
+                if selected_species != "All species":
+                    active_filters_list.append(f"Species: {selected_species}")
+
+                filter_inputs = {
+                    "Sampled tissue": input.sampled_tissue(),
+                    "Sex": input.sex(),
+                    "Omics approach": input.omics_approach(),
+                    "Platform": input.platform(),
+                    "Raw data availability": input.raw_data_availability(),
+                    "Processed data availability": input.processed_data_availability(),
+                }
+
+                for filter_name, selected_values in filter_inputs.items():
+                    if selected_values:
+                        for value in selected_values:
+                            active_filters_list.append(f"{filter_name}: {value}")
+
+                if not active_filters_list:
+                    return ui.p("No active filters.")
+
+                return ui.TagList(
+                    ui.h4("Active filters"),
+                    ui.tags.ul(*[ui.tags.li(value) for value in active_filters_list]),
+                )
 
 
 @reactive.calc
@@ -461,177 +628,6 @@ def _():
         ui.update_selectize(
             "processed_data_availability",
             selected=[],
-        )
-
-
-with express_ui.hold():
-
-    @render.ui
-    def active_filters():
-        active_filters_list = []
-
-        selected_species = input.species()
-        if selected_species != "All species":
-            active_filters_list.append(f"Species: {selected_species}")
-
-        filter_inputs = {
-            "Sampled tissue": input.sampled_tissue(),
-            "Sex": input.sex(),
-            "Omics approach": input.omics_approach(),
-            "Platform": input.platform(),
-            "Raw data availability": input.raw_data_availability(),
-            "Processed data availability": input.processed_data_availability(),
-        }
-
-        for filter_name, selected_values in filter_inputs.items():
-            if selected_values:
-                for value in selected_values:
-                    active_filters_list.append(f"{filter_name}: {value}")
-
-        if not active_filters_list:
-            return ui.p("No active filters.")
-
-        return ui.TagList(
-            ui.h4("Active filters"),
-            ui.tags.ul(*[ui.tags.li(value) for value in active_filters_list]),
-        )
-
-    @render.ui
-    def omics_approach_chart():
-        df = filtered_dataset()
-
-        if df.empty:
-            return ui.p("No data available for the selected filters.")
-
-        omics_counts = count_by_category(df, "Omics_Approach")
-
-        fig = create_horizontal_bar_chart(
-            df=omics_counts,
-            x_column="Omics_Approach",
-            y_column="count",
-            title="Datasets by omics approach",
-            x_axis_title="Number of datasets",
-        )
-
-        return ui.HTML(
-            fig.to_html(
-                full_html=False,
-                include_plotlyjs=True,
-                config={"responsive": True},
-            )
-        )
-
-    @render.ui
-    def sampled_tissue_chart():
-        df = filtered_dataset()
-
-        if df.empty:
-            return ui.p("No data available for the selected filters.")
-
-        tissue_counts = count_by_category(df, "Sampled_Tissue")
-
-        fig = create_horizontal_bar_chart(
-            df=tissue_counts,
-            x_column="Sampled_Tissue",
-            y_column="count",
-            title="Datasets by sampled tissue",
-            x_axis_title="Number of datasets",
-        )
-
-        return ui.HTML(
-            fig.to_html(
-                full_html=False,
-                include_plotlyjs=True,
-                config={"responsive": True},
-            )
-        )
-
-    @render.ui
-    def sex_distribution_chart():
-        df = filtered_dataset()
-
-        if df.empty:
-            return ui.p("No data available for the selected filters.")
-
-        sex_counts = count_by_category(df, "Sex")
-
-        fig = create_donut_chart(
-            df=sex_counts,
-            category_column="Sex",
-            value_column="count",
-            title="Datasets by recorded biological sex",
-        )
-
-        return ui.HTML(
-            fig.to_html(
-                full_html=False,
-                include_plotlyjs=True,
-                config={"responsive": True},
-            )
-        )
-
-    @render.ui
-    def platform_chart():
-        df = filtered_dataset()
-
-        if df.empty:
-            return ui.p("No data available for the selected  filters")
-
-        df = df.copy()
-
-        df["Platform"] = normalize_text_category(df["Platform"])
-
-        df["Platform"] = df["Platform"].fillna("Blank in catalog")
-
-        platform_counts = count_by_category(df, "Platform")
-
-        fig = create_horizontal_bar_chart(
-            df=platform_counts,
-            x_column="Platform",
-            y_column="count",
-            title="Datasets by recorded sequencing platform",
-            x_axis_title="Number of datasets",
-        )
-
-        return ui.HTML(
-            fig.to_html(
-                full_html=False,
-                include_plotlyjs=True,
-                config={"responsive": True},
-            )
-        )
-
-    @render.ui
-    def molecular_biotype_chart():
-        df = filtered_dataset()
-
-        if df.empty:
-            return ui.p("No data available for the selected filters.")
-
-        df = df.copy()
-
-        df["Molecular_Biotype"] = normalize_text_category(df["Molecular_Biotype"])
-
-        df["Molecular_Biotype"] = df["Molecular_Biotype"].fillna("Blank in catalog")
-
-        biotype_counts = count_by_category(
-            df,
-            "Molecular_Biotype",
-        )
-
-        fig = create_treemap_chart(
-            df=biotype_counts,
-            category_column="Molecular_Biotype",
-            value_column="count",
-            title="Datasets by molecular biotype",
-        )
-
-        return ui.HTML(
-            fig.to_html(
-                full_html=False,
-                include_plotlyjs=True,
-                config={"responsive": True},
-            )
         )
 
 

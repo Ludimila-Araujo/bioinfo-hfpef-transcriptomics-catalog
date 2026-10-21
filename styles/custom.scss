@@ -7,13 +7,13 @@
 
 :root {
     --hfpef-ink: #172B3A;
-    --hfpef-paper: #F4F1EA;
+    --hfpef-paper: #F1F0EB;
     --hfpef-sage: #527568;
     --hfpef-terracotta: #B77C70;
     --hfpef-text: #28333B;
     --hfpef-muted: #68747B;
-    --hfpef-border: #D9DFDC;
-    --hfpef-surface: #FFFFFF;
+    --hfpef-border: #D5DCD7;
+    --hfpef-surface: #FAF9F6;
 }
 
 /* Global typography and text */
@@ -59,6 +59,17 @@ a:hover {
     color: var(--hfpef-terracotta);
 }
 
+/* Justified text: Introduction and Metadata Dictionary */
+#introduction p,
+#metadata-dictionary p {
+    text-align: justify;
+}
+
+/* Global report background */
+body {
+    background-color: var(--hfpef-paper);
+}
+
 /* Repository Overview and metric cards */
 
 .overview-card {
@@ -74,7 +85,9 @@ a:hover {
     gap: 0.65rem;
 
     background: var(--hfpef-surface);
+    background-color: var(--hfpef-surface);
     border: 1px solid var(--hfpef-border);
+    border-color: var(--hfpef-border);
     border-left: 4px solid var(--hfpef-sage);
     border-radius: 10px;
 
@@ -100,6 +113,25 @@ a:hover {
     overflow-wrap: anywhere;
 }
 
+/* Repositories Overview: compact metrics, aligned with the headings */
+#repositories-overview .columns {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    max-width: none;
+    margin-inline: 0;
+}
+
+#repositories-overview .columns .column {
+    flex: 0 0 240px;
+}
+
+#repositories-overview .columns .overview-card {
+    min-height: 100px;
+    margin: 0;
+    padding: 1rem 1.25rem;
+}
+
 /* ==========================================
    HFpEF Repository
    Sprint 17.1: Editorial header
@@ -109,7 +141,7 @@ a:hover {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    padding: 3rem;
+    padding: 2.25rem;
     margin: 0 0 2.5rem;
     border-radius: 12px;
     background-color: #172B3A;
@@ -151,10 +183,10 @@ a:hover {
 }
 
 .hero-header h1 {
-    max-width: 780px;
+    max-width: 650px;
     margin: 0 0 1rem;
     color: #F4F1EA;
-    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
     font-weight: 650;
     line-height: 1.12;
     letter-spacing: -0.04em;
@@ -164,7 +196,7 @@ a:hover {
     max-width: 650px;
     margin: 0;
     color: #D5DFDB;
-    font-size: 1.05rem;
+    font-size: 1rem;
     line-height: 1.7;
 }
 
@@ -194,11 +226,11 @@ a:hover {
 
 .hero-footer {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 1.5rem;
-    margin-top: 2rem;
-    padding-top: 1.25rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
     border-top: 1px solid rgba(244, 241, 234, 0.22);
 }
 
@@ -218,19 +250,28 @@ a:hover {
     font-weight: 600;
 }
 
-.hero-author span,
-.hero-author a {
+.hero-author span {
     color: #D5DFDB;
 }
 
-.hero-author a {
-    overflow-wrap: anywhere;
+.hero-author a,
+.hero-author a:visited {
+    color: #D5DFDB;
     text-decoration: none;
+    overflow-wrap: anywhere;
 }
 
-.hero-author a:hover {
+.hero-author a:hover,
+.hero-author a:focus-visible {
     color: #D9A095;
     text-decoration: underline;
+}
+
+.hero-authors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 280px));
+    gap: 1.5rem;
+    min-width: 0;
 }
 
 .hero-logos {
@@ -240,39 +281,20 @@ a:hover {
     min-width: 120px;
 }
 
-.logo-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 110px;
-    min-height: 48px;
-    padding: 0.5rem;
-    border: 1px dashed rgba(244, 241, 234, 0.4);
-    border-radius: 6px;
-    color: #D5DFDB;
-    font-size: 0.75rem;
-    text-align: center;
-}
-
 @media (max-width: 850px) {
     .hero-footer {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .hero-logos {
-        grid-column: 1 / -1;
         justify-content: flex-start;
     }
 }
 
 @media (max-width: 560px) {
-    .hero-footer {
+    .hero-authors {
         grid-template-columns: minmax(0, 1fr);
         gap: 1rem;
-    }
-
-    .hero-logos {
-        grid-column: auto;
     }
 }
 
@@ -315,6 +337,8 @@ a:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
     width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
     box-sizing: border-box;
     padding: 0.75rem 1rem;
 }
@@ -355,37 +379,44 @@ a:hover {
 /* Dashboard layout */
 .dashboard-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 280px;
+    grid-template-columns: minmax(0, 1fr) 300px;
     grid-template-areas: "main sidebar";
-    gap: 1.5rem;
+    gap: 1.25rem;
     align-items: start;
+    width: 100%;
+    max-width: none;
+    margin: 0;
 }
 
 .dashboard-main {
     grid-area: main;
     min-width: 0;
+    width: 100%;
 }
 
 .dashboard-sidebar {
     grid-area: sidebar;
     min-width: 0;
+    width: 100%;
     position: sticky;
-    top: 1.5rem;
+    top: 1rem;
 }
 
 .dashboard-charts-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
+    width: 100%;
 }
 
 .dashboard-chart-wide {
     margin-top: 1rem;
     min-width: 0;
+    width: 100%;
 }
 
 .dashboard-active-filters {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     overflow-wrap: anywhere;
 }
 
@@ -406,5 +437,203 @@ a:hover {
 @media (max-width: 600px) {
     .dashboard-charts-grid {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Expand dashboard output container */
+#dashboard .cell-output:has(.dashboard-layout),
+#dashboard .cell-output-display:has(.dashboard-layout) {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+}
+
+#dashboard .dashboard-layout {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+
+/* Compact dashboard */
+.dashboard-layout {
+    gap: 1rem;
+}
+
+.dashboard-charts-grid {
+    gap: 0.5rem;
+}
+
+.dashboard-charts-grid>div {
+    min-width: 0;
+}
+
+.dashboard-sidebar {
+    font-size: 0.9rem;
+}
+
+.dashboard-sidebar h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-sidebar label {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-sidebar .form-select,
+.dashboard-sidebar .form-control {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.6rem;
+}
+
+.dashboard-active-filters {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+/* Reduce chart height and spacing */
+.dashboard-charts-grid .js-plotly-plot {
+    height: 300px !important;
+}
+
+.dashboard-chart-wide .js-plotly-plot {
+    height: 360px !important;
+}
+
+.dashboard-charts-grid .plot-container,
+.dashboard-chart-wide .plot-container,
+.dashboard-charts-grid .svg-container,
+.dashboard-chart-wide .svg-container {
+    height: 100% !important;
+}
+
+/* Smaller chart typography */
+.dashboard-layout .xtick text,
+.dashboard-layout .ytick text {
+    font-size: 10px !important;
+}
+
+.dashboard-layout .gtitle {
+    font-size: 14px !important;
+}
+
+.dashboard-layout .g-xtitle text,
+.dashboard-layout .g-ytitle text {
+    font-size: 11px !important;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .dashboard-charts-grid .js-plotly-plot {
+        height: 260px !important;
+    }
+
+    .dashboard-chart-wide .js-plotly-plot {
+        height: 300px !important;
+    }
+}
+
+/* Opening section: Introduction + Metadata (left) | Overview (right).
+   The headings stay at the document root so they appear in the TOC;
+   the side-by-side arrangement comes from a grid on <main>. */
+
+/* Heading hierarchy */
+#introduction>h2,
+#metadata-dictionary>h2,
+#repositories-overview>h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.65rem;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+#metadata-dictionary {
+    margin-top: 0rem;
+}
+
+#repositories-overview {
+    margin-top: 0;
+}
+
+/* Repository metrics: two compact cards side by side */
+#repositories-overview .overview-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 380px;
+}
+
+#repositories-overview .overview-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+
+    width: 100%;
+    min-height: 100px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 1rem;
+
+    text-align: center;
+}
+
+#repositories-overview .overview-card,
+.overview-label {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    text-align: center;
+}
+
+#repositories-overview .overview-card,
+.overview-value {
+    margin: 0;
+    font-size: 1.8rem;
+    line-height: 1.1;
+    text-align: center;
+}
+
+@media (min-width: 851px) {
+    #quarto-document-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(240px, 0.8fr);
+        column-gap: 2.5rem;
+        align-items: start;
+    }
+
+    #quarto-document-content>* {
+        grid-column: 1 / -1;
+        min-width: 0;
+    }
+
+    #quarto-document-content>.hero-header {
+        grid-row: 1;
+    }
+
+    #quarto-document-content>#introduction {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    #quarto-document-content>#metadata-dictionary {
+        grid-column: 1;
+        grid-row: 3;
+        margin-top: -24px;
+    }
+
+    #quarto-document-content>#repositories-overview {
+        grid-column: 2;
+        grid-row: 2 / span 2;
+        margin-top: 0;
+        transform: translateX(24px);
     }
 }
