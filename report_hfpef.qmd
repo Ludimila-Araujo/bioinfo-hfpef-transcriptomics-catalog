@@ -140,7 +140,6 @@ Repositories
 
 ```{python}
 # Extração prévia dos dados de todas as espécies catalogadas: 
-
 metrics_summary = {}
 
 for species_name, species_df in df_species.items():
@@ -157,39 +156,63 @@ print("::: {.panel-tabset}\n")
 for species_name in sorted(metrics_summary):
     metrics = metrics_summary[species_name]
     display_name = species_name.replace("_", " ").capitalize()
+    sex = metrics["Sex distribution"]
 
     print(f"## {display_name}\n")
 
-    sex = metrics["Sex distribution"]
-
     html_content = f"""
-<div class="species-cards-grid">
-    <div class="overview-card">
-        <p class="overview-label">Datasets catalogued</p>
-        <p class="overview-value">{metrics["dataset_count"]}</p>
-    </div>
+    <div class="species-profile">
 
-    <div class="overview-card">
-        <p class="overview-label">Sampled Tissue</p>
-        <p class="overview-value">{metrics["Sampled tissue"]}</p>
-    </div>
+        <div class="species-metrics-stack">
 
-    <div class="overview-card">
-        <p class="overview-label">Omics Approach</p>
-        <p class="overview-value">{metrics["Omics approach"]}</p>
-    </div>
+            <div class="overview-card">
+                <p class="overview-label">Datasets catalogued</p>
+                <p class="overview-value">{metrics["dataset_count"]}</p>
+            </div>
 
-    <div class="overview-card overview-card--tall">
-        <p class="overview-label">Sex Distribution</p>
-        <p class="overview-value sex-distribution-value">
-            Female: {sex["Female"]:.0f}%<br>
-            Male: {sex["Male"]:.0f}%<br>
-            Male / female: {sex["Male / female"]:.0f}%<br>
-            Not reported: {sex["Not reported"]:.0f}%
-        </p>
+            <div class="overview-card">
+                <p class="overview-label">Sampled Tissue</p>
+                <p class="overview-value">{metrics["Sampled tissue"]}</p>
+            </div>
+
+            <div class="overview-card">
+                <p class="overview-label">Omics Approach</p>
+                <p class="overview-value">{metrics["Omics approach"]}</p>
+            </div>
+
+        </div>
+
+        <div class="sex-distribution-card">
+            <p class="overview-label">Sex Distribution</p>
+
+            <div class="sex-distribution-list">
+    """
+
+    for category in ["Female", "Male", "Male / female", "Not reported"]:
+        percentage = sex[category]
+
+        html_content += f"""
+                <div class="sex-distribution-item">
+                    <div class="sex-distribution-header">
+                        <span>{category}</span>
+                        <span>{percentage:.0f}%</span>
+                    </div>
+
+                    <div class="sex-progress-track">
+                        <div
+                            class="sex-progress-fill"
+                            style="width: {percentage:.0f}%;">
+                        </div>
+                    </div>
+                </div>
+        """
+
+    html_content += """
+            </div>
+        </div>
+
     </div>
-</div>
-"""
+    """
 
     print("```{=html}")
     print(html_content)

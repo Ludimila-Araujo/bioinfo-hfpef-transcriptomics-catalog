@@ -332,47 +332,128 @@ body {
 
 /* Species cards layout */
 
-.species-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
+.species-profile {
     width: 100%;
-    max-width: 720px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    padding: 0.75rem 1rem;
+    max-width: 760px;
+    margin: 1.75rem auto 2rem;
 }
 
-.species-cards-grid .overview-card {
-    min-height: 0;
+/* Three compact metric cards */
+
+.species-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 1rem;
+}
+
+.species-metrics-grid .overview-card {
+    min-width: 0;
+    min-height: 110px;
     margin: 0;
-    padding: 0.9rem 1.25rem;
-    gap: 0.3rem;
+    padding: 1rem 0.75rem;
+    align-items: center;
+    text-align: center;
 }
 
-.species-cards-grid .overview-value {
+.species-metrics-grid .overview-label {
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.species-metrics-grid .overview-value {
     font-size: 1.6rem;
+    text-align: center;
 }
 
-.species-cards-grid .sex-distribution-value {
-    font-size: 1rem;
-    line-height: 1.5;
+/* Sex distribution */
+
+.sex-distribution-card {
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 1.25rem 1.5rem;
+
+    background: var(--hfpef-surface);
+    border: 1px solid var(--hfpef-border);
+    border-left: 4px solid var(--hfpef-sage);
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(23, 43, 58, 0.04);
 }
 
-.overview-card--tall {
-    grid-column: 2;
-    grid-row: 1 / span 3;
+.sex-distribution-card>.overview-label {
+    margin: 0 0 1.25rem;
+    text-align: center;
 }
+
+.sex-distribution-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sex-distribution-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.sex-distribution-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.sex-distribution-header span:last-child {
+    color: var(--hfpef-sage);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.sex-progress-track {
+    width: 100%;
+    height: 7px;
+    overflow: hidden;
+    background: var(--hfpef-border);
+    border-radius: 999px;
+}
+
+.sex-progress-fill {
+    height: 100%;
+    background: var(--hfpef-sage);
+    border-radius: inherit;
+}
+
+/* Responsive layout */
 
 @media (max-width: 700px) {
-    .species-cards-grid {
-        grid-template-columns: 1fr;
-        padding: 0.75rem;
+    .species-profile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 100%;
+        max-width: 760px;
+        margin: 1.75rem auto 2rem;
     }
 
-    .overview-card--tall {
-        grid-column: auto;
-        grid-row: auto;
+    .species-metrics-grid {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+    }
+
+    .species-metrics-grid .overview-card {
+        min-height: 90px;
+    }
+
+    .sex-distribution-card {
+        padding: 1rem;
     }
 }
 
@@ -635,5 +716,173 @@ body {
         grid-row: 2 / span 2;
         margin-top: 0;
         transform: translateX(24px);
+    }
+}
+
+
+
+/* ==========================================
+   Repositories Details
+   Two-column species profile
+   ========================================== */
+
+#repositories-details .panel-tabset>.nav-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto 1.5rem;
+    border-bottom: 1px solid var(--hfpef-border);
+}
+
+#repositories-details .panel-tabset>.nav-tabs .nav-link {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px 8px 0 0;
+}
+
+#repositories-details .tab-content {
+    width: 100%;
+}
+
+#repositories-details .tab-pane.active {
+    display: block;
+}
+
+#repositories-details .species-profile {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.15fr);
+    align-items: stretch;
+    gap: 1.25rem;
+
+    width: 100%;
+    max-width: 1050px;
+    margin: 1.5rem auto 2rem;
+    padding: 1.25rem;
+
+    box-sizing: border-box;
+    background: var(--hfpef-surface);
+    border: 1px solid var(--hfpef-border);
+    border-radius: 14px;
+}
+
+/* Three stacked metric cards */
+
+#repositories-details .species-metrics-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+#repositories-details .species-metrics-stack .overview-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex: 1;
+
+    min-width: 0;
+    min-height: 105px;
+    margin: 0;
+    padding: 1rem 1.25rem;
+    box-sizing: border-box;
+}
+
+#repositories-details .species-metrics-stack .overview-label {
+    margin: 0 0 0.35rem;
+    text-align: left;
+    font-size: 0.82rem;
+}
+
+#repositories-details .species-metrics-stack .overview-value {
+    margin: 0;
+    text-align: left;
+    font-size: 1.7rem;
+}
+
+/* Sex distribution panel */
+
+#repositories-details .sex-distribution-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 1.5rem;
+
+    background: var(--hfpef-surface);
+    border: 1px solid var(--hfpef-border);
+    border-left: 4px solid var(--hfpef-sage);
+    border-radius: 10px;
+}
+
+#repositories-details .sex-distribution-card>.overview-label {
+    margin: 0 0 1.5rem;
+    text-align: left;
+    font-size: 1rem;
+}
+
+#repositories-details .sex-distribution-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+#repositories-details .sex-distribution-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+#repositories-details .sex-distribution-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+#repositories-details .sex-distribution-header span:last-child {
+    color: var(--hfpef-sage);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+#repositories-details .sex-progress-track {
+    width: 100%;
+    height: 7px;
+    overflow: hidden;
+    background: var(--hfpef-border);
+    border-radius: 999px;
+}
+
+#repositories-details .sex-progress-fill {
+    height: 100%;
+    background: var(--hfpef-sage);
+    border-radius: inherit;
+}
+
+/* Responsive layout */
+
+@media (max-width: 700px) {
+    #repositories-details .species-profile {
+        grid-template-columns: minmax(0, 1fr);
+        max-width: 560px;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    #repositories-details .species-metrics-stack .overview-card {
+        min-height: 85px;
+    }
+
+    #repositories-details .sex-distribution-card {
+        padding: 1.25rem;
     }
 }
