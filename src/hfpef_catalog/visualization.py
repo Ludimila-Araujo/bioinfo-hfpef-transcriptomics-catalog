@@ -35,6 +35,7 @@ def create_bar_chart(
         x=x_column,
         y=y_column,
         title=title,
+        color_discrete_sequence=["#315C55"],
     )
 
     fig.update_layout(
@@ -81,6 +82,7 @@ def create_horizontal_bar_chart(
         y=x_column,
         orientation="h",
         title=title,
+        color_discrete_sequence=["#315C55"],
     )
 
     fig.update_layout(
@@ -126,6 +128,14 @@ def create_donut_chart(
         values=value_column,
         title=title,
         hole=0.45,
+        color_discrete_sequence=[
+            "#315C55",
+            "#C87562",
+            "#D5AD63",
+            "#A8B7AE",
+            "#78968A",
+            "#6C83A5",
+        ],
     )
 
     fig.update_traces(
@@ -176,6 +186,14 @@ def create_treemap_chart(
         path=[category_column],
         values=value_column,
         title=title,
+        color_discrete_sequence=[
+            "#315C55",
+            "#78968A",
+            "#C87562",
+            "#D5AD63",
+            "#6C83A5",
+            "#A8B7AE",
+        ],
     )
 
     fig.update_traces(

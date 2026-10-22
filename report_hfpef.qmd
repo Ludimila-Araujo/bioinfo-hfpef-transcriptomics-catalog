@@ -406,7 +406,7 @@ with express_ui.div(class_="dashboard-layout"):
                     )
                 )
 
-                # barra lateral: filtros e resultados relacionados
+    # barra lateral: filtros e resultados relacionados
 
     with express_ui.div(class_="dashboard-sidebar"):
         ui.div(
