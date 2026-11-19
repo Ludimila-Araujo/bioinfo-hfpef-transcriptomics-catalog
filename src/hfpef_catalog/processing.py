@@ -19,34 +19,6 @@ def count_all_species(df_species: dict[str, pd.DataFrame]) -> int:
     return len(df_species)
 
 
-# Função para contar o número total de respositórios catalogados
-def sum_all_repositories(
-    df_species: dict[str, pd.DataFrame],
-) -> int:
-    """
-    Count the total number of cataloged dataset records across
-    all species DataFrames.
-
-    Parameters
-    ----------
-    df_species : dict[str, pd.DataFrame]
-        Dictionary mapping species identifiers to their DataFrames.
-
-    Returns
-    -------
-    int
-        Total number of rows across all species DataFrames.
-    """
-
-    total_repo = 0
-
-    for df in df_species.values():
-        species_repositories = len(df)
-        total_repo += species_repositories
-
-    return total_repo
-
-
 # Função para contar quantidade de datasets por espécie:
 def dataset_count(df: pd.DataFrame) -> int:
     """

@@ -85,7 +85,6 @@ from hfpef_catalog.data_loader import (
 )
 from hfpef_catalog.processing import (
     count_all_species,
-    sum_all_repositories,
     get_species_profile,
     dataset_count,
     tissue_count,
