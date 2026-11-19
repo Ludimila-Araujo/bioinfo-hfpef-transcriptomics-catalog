@@ -158,39 +158,6 @@ def get_species_profile(df: pd.DataFrame) -> dict:
     }
 
 
-# Função para normalização dos dados:
-
-
-def normalize_data_types(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Normalize selected column types while preserving original values.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame containing the cataloged datasets.
-
-    Returns
-    -------
-    pd.DataFrame
-        Copy of the input DataFrame with selected columns represented
-        as pandas string types, preserving categories such as
-        'Not reported' and numeric values stored as text.
-    """
-    df = df.copy()
-
-    columns_to_preserve = [
-        "Biological_Individuals_Count",
-        "N_BioSamples",
-        "Local_Server_Path",
-    ]
-
-    for column in columns_to_preserve:
-        df[column] = df[column].astype("string")
-
-    return df
-
-
 def filter_datasets(df: pd.DataFrame, **filters) -> pd.DataFrame:
     """
     Filter datasets using one or more column criteria.

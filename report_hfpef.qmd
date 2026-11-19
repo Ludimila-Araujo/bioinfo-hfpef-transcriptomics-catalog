@@ -1,5 +1,5 @@
 ---
-title: "HfpEF Transcriptomics Repositories"
+title: "HFpEF Transcriptomics Repositories"
 authors: 
     - name: "Ludimila Araújo"
       affiliation: "BioME / UFRN"
@@ -22,7 +22,7 @@ format:
     server: shiny
         
 execute:
-    echo: false #versão final exibirá apenas textos, gráficos e tabelas geradas; linhas de código ocultas dos leitores.
+    echo: false 
     warning: false
 ---
 
